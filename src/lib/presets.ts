@@ -1,0 +1,117 @@
+import type { Escenario } from './tipos';
+
+/**
+ * Datos por país. TODO es un valor por defecto editable, no una verdad fija.
+ * Para agregar un país nuevo: copiá un bloque y cambiá los valores.
+ */
+export interface Preset {
+  codigo: string;
+  nombre: string;
+  /** Código ISO de la moneda: ARS, MXN, CLP, UYU, COP */
+  monedaCodigo: string;
+  /** Símbolo que se muestra en pantalla */
+  simbolo: string;
+  /** % de impuesto/retención sugerido como punto de partida */
+  impuestoPctSugerido: number;
+  /** Cotización sugerida (unidades locales por 1 USD); editable */
+  cotizacionUSDsugerida: number;
+  /** Si soporta traer cotización en vivo (solo Argentina por ahora) */
+  soportaDolarApi: boolean;
+  /** Honorario individual de ejemplo (para no arrancar en cero) */
+  honorarioIndividualEjemplo: number;
+  /** Alquiler mensual de ejemplo */
+  alquilerEjemplo: number;
+  /** Nota de contexto local que se muestra como ayuda */
+  nota: string;
+}
+
+export const PAISES: Preset[] = [
+  {
+    codigo: 'AR',
+    nombre: 'Argentina',
+    monedaCodigo: 'ARS',
+    simbolo: '$',
+    impuestoPctSugerido: 10,
+    cotizacionUSDsugerida: 1200,
+    soportaDolarApi: true,
+    honorarioIndividualEjemplo: 18000,
+    alquilerEjemplo: 120000,
+    nota: 'Muchos profesionales trabajan con monotributo (un monto fijo mensual). Por la brecha cambiaria, conviene mirar el dólar blue. Ajustá el % según tu categoría real.',
+  },
+  {
+    codigo: 'MX',
+    nombre: 'México',
+    monedaCodigo: 'MXN',
+    simbolo: '$',
+    impuestoPctSugerido: 10,
+    cotizacionUSDsugerida: 18,
+    soportaDolarApi: false,
+    honorarioIndividualEjemplo: 700,
+    alquilerEjemplo: 6000,
+    nota: 'Como persona física con actividad profesional suele aplicarse retención de ISR (y a veces IVA). El % real depende de tu régimen, por ejemplo RESICO.',
+  },
+  {
+    codigo: 'CL',
+    nombre: 'Chile',
+    monedaCodigo: 'CLP',
+    simbolo: '$',
+    impuestoPctSugerido: 13,
+    cotizacionUSDsugerida: 950,
+    soportaDolarApi: false,
+    honorarioIndividualEjemplo: 40000,
+    alquilerEjemplo: 250000,
+    nota: 'Las boletas de honorarios tienen una retención que el Estado actualiza cada año. Verificá el porcentaje vigente y ajustalo acá.',
+  },
+  {
+    codigo: 'UY',
+    nombre: 'Uruguay',
+    monedaCodigo: 'UYU',
+    simbolo: '$',
+    impuestoPctSugerido: 12,
+    cotizacionUSDsugerida: 40,
+    soportaDolarApi: false,
+    honorarioIndividualEjemplo: 1500,
+    alquilerEjemplo: 18000,
+    nota: 'Los honorarios profesionales tributan IRPF e IVA según tu situación. El porcentaje es orientativo: ajustalo a tu caso.',
+  },
+  {
+    codigo: 'CO',
+    nombre: 'Colombia',
+    monedaCodigo: 'COP',
+    simbolo: '$',
+    impuestoPctSugerido: 11,
+    cotizacionUSDsugerida: 4000,
+    soportaDolarApi: false,
+    honorarioIndividualEjemplo: 120000,
+    alquilerEjemplo: 900000,
+    nota: 'A los honorarios suele aplicárseles retención en la fuente. El porcentaje depende de tu base y condición; ajustalo acá.',
+  },
+];
+
+export function presetPorCodigo(codigo: string): Preset {
+  return PAISES.find((p) => p.codigo === codigo) ?? PAISES[0];
+}
+
+/** Crea un escenario inicial poblado con el ejemplo del país. */
+export function escenarioInicial(codigo = 'AR'): Escenario {
+  const p = presetPorCodigo(codigo);
+  return {
+    version: 1,
+    pais: p.codigo,
+    usarUSD: false,
+    cotizacionUSD: p.cotizacionUSDsugerida,
+    pacientesActivos: 18,
+    honorarios: {
+      individual: p.honorarioIndividualEjemplo,
+      parejaFamilia: Math.round(p.honorarioIndividualEjemplo * 1.4),
+      grupo: 0,
+    },
+    sesionesSemana: { individual: 18, parejaFamilia: 0, grupo: 0 },
+    semanasTrabajadas: 46,
+    cancelacionPct: 10,
+    horasAdminSemana: 5,
+    gastos: { alquiler: p.alquilerEjemplo, supervision: 0, formacion: 0, otros: 0 },
+    impuestoPct: p.impuestoPctSugerido,
+    metaNetaMensual: 0,
+  };
+}
