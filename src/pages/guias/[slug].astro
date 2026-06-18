@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { guia } = Astro.props;
 const { Content } = await render(guia);
 
-const fecha = guia.data.actualizado ?? guia.data.fecha;
+const fecha = guia.data.actualizado ?? guia.data.pubDate;
 const fechaLegible = fecha.toLocaleDateString('es-AR', {
   year: 'numeric',
   month: 'long',
@@ -27,10 +27,10 @@ const schema = {
   '@type': 'Article',
   headline: guia.data.title,
   description: guia.data.description,
-  datePublished: guia.data.fecha.toISOString(),
+  datePublished: guia.data.pubDate.toISOString(),
   dateModified: fecha.toISOString(),
   inLanguage: 'es',
-  author: { '@type': 'Organization', name: SITE.name },
+  author: { '@type': guia.data.author ? 'Person' : 'Organization', name: guia.data.author ?? SITE.name },
   publisher: { '@type': 'Organization', name: SITE.name },
 };
 ---
@@ -54,13 +54,38 @@ const schema = {
       <h1 class="mt-4 text-4xl font-semibold leading-tight">{guia.data.title}</h1>
       <p class="mt-4 text-lg text-tinta-600">{guia.data.description}</p>
       <p class="mt-4 text-sm text-tinta-500">
-        Actualizado el {fechaLegible} · {guia.data.tiempoLectura} {T.guias.tiempoLectura}
+        {guia.data.author && <>Por {guia.data.author} · </>}{fechaLegible} · {guia.data.tiempoLectura}
+        {' '}{T.guias.tiempoLectura}
       </p>
     </header>
 
     <div class="prosa mt-10">
       <Content />
     </div>
+
+    <!-- CTA a la calculadora -->
+    <div class="mx-auto mt-10 max-w-2xl rounded-2xl border border-crema-200 bg-crema-100/60 p-5 text-center sm:p-6">
+      <p class="font-display text-lg font-semibold text-tinta-900">Mirá tu práctica en números</p>
+      <p class="mx-auto mt-1 max-w-md text-sm text-tinta-600">
+        Gratis y privado. Tu ingreso real por hora y un índice de sostenibilidad, en un minuto.
+      </p>
+      <a
+        href="/#calculadora"
+        class="mt-4 inline-block rounded-xl bg-terracota-600 px-5 py-2.5 text-sm font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-700"
+      >
+        Abrir la calculadora
+      </a>
+    </div>
+
+    {
+      guia.data.tags.length > 0 && (
+        <div class="mx-auto mt-8 flex max-w-2xl flex-wrap gap-2">
+          {guia.data.tags.map((t) => (
+            <span class="rounded-full bg-crema-100 px-3 py-1 text-xs text-tinta-600">#{t}</span>
+          ))}
+        </div>
+      )
+    }
 
     <div class="mt-12">
       <AdSlot minHeight="100px" />
