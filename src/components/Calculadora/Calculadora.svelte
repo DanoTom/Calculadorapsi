@@ -161,7 +161,7 @@
       ...base,
       usarUSD: esc.usarUSD,
       semanasTrabajadas: esc.semanasTrabajadas,
-      cancelacionesSemana: esc.cancelacionesSemana,
+      cancelacionesMes: esc.cancelacionesMes,
       horasAdminSemana: esc.horasAdminSemana,
     };
     cotizacionInfo = '';
@@ -535,10 +535,10 @@
       <div class="mt-5 grid gap-4 sm:grid-cols-2">
         <CampoNumero
           id="cancelaciones"
-          label="Sesiones que se te caen"
-          sufijo="/sem"
-          bind:value={esc.cancelacionesSemana}
-          ayuda={`Más o menos por semana, entre ausencias y cancelaciones. ≈ ${fmtPct(r.ausentismoPct)} de tus sesiones.`}
+          label="Sesiones que cancelan"
+          sufijo="/mes"
+          bind:value={esc.cancelacionesMes}
+          ayuda={`Más o menos por mes, entre ausencias y cancelaciones. ≈ ${fmtPct(r.ausentismoPct)} de tus sesiones.`}
         />
         <CampoNumero
           id="admin"

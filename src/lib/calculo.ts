@@ -31,11 +31,11 @@ export function calcular(esc: Escenario): Resultado {
     brutoSemanalPleno += sesiones * honorario;
   }
 
-  // Ausentismo: el usuario carga cuántas sesiones por semana se le caen.
-  // Lo convertimos en un porcentaje sobre el total de sesiones.
-  const cancelaciones = Math.max(0, n(esc.cancelacionesSemana));
+  // Ausentismo: el usuario carga cuántas sesiones por MES le cancelan.
+  // Lo pasamos a semana y lo convertimos en un porcentaje sobre el total.
+  const cancelacionesSemana = Math.max(0, n(esc.cancelacionesMes)) / (52 / 12);
   const factorAsistencia =
-    sesionesSemanaTotal > 0 ? clamp(1 - cancelaciones / sesionesSemanaTotal, 0, 1) : 1;
+    sesionesSemanaTotal > 0 ? clamp(1 - cancelacionesSemana / sesionesSemanaTotal, 0, 1) : 1;
   const ausentismoPct = (1 - factorAsistencia) * 100;
 
   const brutoSemanalFacturado = brutoSemanalPleno * factorAsistencia;

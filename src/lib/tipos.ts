@@ -36,8 +36,8 @@ export interface Escenario {
 
   /** Semanas efectivamente trabajadas al año (52 menos vacaciones) */
   semanasTrabajadas: number;
-  /** Sesiones por semana que se caen (cancelaciones/ausencias) */
-  cancelacionesSemana: number;
+  /** Sesiones por mes que cancelan (ausencias/cancelaciones) */
+  cancelacionesMes: number;
   /** Horas administrativas no facturables por semana */
   horasAdminSemana: number;
 

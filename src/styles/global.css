@@ -194,19 +194,13 @@ h1, h2, h3, h4 {
   display: none;
 }
 @media print {
-  body * {
-    visibility: hidden !important;
-  }
-  #hoja-impresion,
-  #hoja-impresion * {
-    visibility: visible !important;
+  /* La hoja se mueve a ser hija directa del <body> (ver ResumenImprimible).
+     Ocultamos todo lo demás para que no queden páginas en blanco. */
+  body > *:not(#hoja-impresion) {
+    display: none !important;
   }
   #hoja-impresion {
     display: block !important;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }

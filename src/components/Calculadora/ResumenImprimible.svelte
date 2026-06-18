@@ -1,10 +1,19 @@
 <script lang="ts">
   /** Hoja A4 imprimible (Exportar PDF). Oculta en pantalla; se ve al imprimir. */
+  import { onMount } from 'svelte';
   import type { Escenario, TipoSesion } from '../../lib/tipos';
   import type { Resultado } from '../../lib/tipos';
   import type { Sostenibilidad } from '../../lib/sostenibilidad';
   import type { Preset } from '../../lib/presets';
   import { fmtMoneda, fmtPct, fmtNumero, n } from '../../lib/formato';
+
+  // Movemos la hoja a ser hija directa del <body>. Así, al imprimir, podemos
+  // ocultar todo lo demás y que NO queden páginas en blanco.
+  let el: HTMLElement;
+  onMount(() => {
+    document.body.appendChild(el);
+    return () => el?.remove();
+  });
 
   interface Props {
     esc: Escenario;
@@ -40,7 +49,7 @@
   );
 </script>
 
-<div id="hoja-impresion" class="hoja-impresion">
+<div bind:this={el} id="hoja-impresion" class="hoja-impresion">
   <div style="font-family: 'Inter Variable', sans-serif; color: #2c241c; max-width: 720px;">
     <!-- Encabezado -->
     <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #ecdfce; padding-bottom:12px;">
@@ -108,7 +117,7 @@
           {/each}
           <tr><td style="padding:3px 0; color:#6e5f50;">Pacientes / sesiones</td><td style="padding:3px 0; text-align:right;">{fmtNumero(r.pacientesActivos)} pac · {fmtNumero(r.sesionesSemanaTotal)}/sem</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Semanas trabajadas</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.semanasTrabajadas))} ({vacaciones} de descanso)</td></tr>
-          <tr><td style="padding:3px 0; color:#6e5f50;">Sesiones que se caen</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.cancelacionesSemana))}/sem (≈ {fmtPct(r.ausentismoPct)})</td></tr>
+          <tr><td style="padding:3px 0; color:#6e5f50;">Sesiones que cancelan</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.cancelacionesMes))}/mes (≈ {fmtPct(r.ausentismoPct)})</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Horas admin.</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.horasAdminSemana))} h/sem</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Impuesto / retención</td><td style="padding:3px 0; text-align:right;">{fmtPct(n(esc.impuestoPct))}</td></tr>
           </tbody>
