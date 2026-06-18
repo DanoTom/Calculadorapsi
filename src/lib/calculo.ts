@@ -15,7 +15,6 @@ import { n } from './formato';
  */
 export function calcular(esc: Escenario): Resultado {
   const semanas = Math.max(0, n(esc.semanasTrabajadas));
-  const factorAsistencia = clamp(1 - n(esc.cancelacionPct) / 100, 0, 1);
 
   // Sesiones e ingreso semanal "pleno" (agenda completa, sin cancelaciones),
   // sumando todos los grupos de honorarios.
@@ -31,6 +30,13 @@ export function calcular(esc: Escenario): Resultado {
     sesionesSemanaTotal += sesiones;
     brutoSemanalPleno += sesiones * honorario;
   }
+
+  // Ausentismo: el usuario carga cuántas sesiones por semana se le caen.
+  // Lo convertimos en un porcentaje sobre el total de sesiones.
+  const cancelaciones = Math.max(0, n(esc.cancelacionesSemana));
+  const factorAsistencia =
+    sesionesSemanaTotal > 0 ? clamp(1 - cancelaciones / sesionesSemanaTotal, 0, 1) : 1;
+  const ausentismoPct = (1 - factorAsistencia) * 100;
 
   const brutoSemanalFacturado = brutoSemanalPleno * factorAsistencia;
   const brutoAnual = brutoSemanalFacturado * semanas;
@@ -118,6 +124,7 @@ export function calcular(esc: Escenario): Resultado {
     horasTotalesSemana,
     sesionesSemanaTotal,
     sesionesFacturadasSemana,
+    ausentismoPct,
     pacientesActivos,
     margenNetoPct,
     meta,

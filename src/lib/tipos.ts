@@ -36,8 +36,8 @@ export interface Escenario {
 
   /** Semanas efectivamente trabajadas al año (52 menos vacaciones) */
   semanasTrabajadas: number;
-  /** % estimado de cancelaciones/ausentismo (0–100) */
-  cancelacionPct: number;
+  /** Sesiones por semana que se caen (cancelaciones/ausencias) */
+  cancelacionesSemana: number;
   /** Horas administrativas no facturables por semana */
   horasAdminSemana: number;
 
@@ -73,6 +73,8 @@ export interface Resultado {
   horasTotalesSemana: number;
   sesionesSemanaTotal: number;
   sesionesFacturadasSemana: number;
+  /** % efectivo de ausentismo (derivado de las cancelaciones por semana) */
+  ausentismoPct: number;
   /** Pacientes activos (suma de todos los grupos) */
   pacientesActivos: number;
 

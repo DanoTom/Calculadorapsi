@@ -108,7 +108,7 @@
           {/each}
           <tr><td style="padding:3px 0; color:#6e5f50;">Pacientes / sesiones</td><td style="padding:3px 0; text-align:right;">{fmtNumero(r.pacientesActivos)} pac · {fmtNumero(r.sesionesSemanaTotal)}/sem</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Semanas trabajadas</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.semanasTrabajadas))} ({vacaciones} de descanso)</td></tr>
-          <tr><td style="padding:3px 0; color:#6e5f50;">Cancelaciones</td><td style="padding:3px 0; text-align:right;">{fmtPct(n(esc.cancelacionPct))}</td></tr>
+          <tr><td style="padding:3px 0; color:#6e5f50;">Sesiones que se caen</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.cancelacionesSemana))}/sem (≈ {fmtPct(r.ausentismoPct)})</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Horas admin.</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.horasAdminSemana))} h/sem</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Impuesto / retención</td><td style="padding:3px 0; text-align:right;">{fmtPct(n(esc.impuestoPct))}</td></tr>
           </tbody>

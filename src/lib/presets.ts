@@ -120,7 +120,7 @@ export function escenarioInicial(codigo = 'AR'): Escenario {
       },
     ],
     semanasTrabajadas: 48,
-    cancelacionPct: 10,
+    cancelacionesSemana: 1,
     horasAdminSemana: 5,
     gastos: { alquiler: p.alquilerEjemplo, supervision: 0, formacion: 0, otros: 0 },
     impuestoPct: p.impuestoPctSugerido,

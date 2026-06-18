@@ -17,7 +17,7 @@
     eliminarEscenario,
     type EscenarioGuardado,
   } from '../../lib/storage';
-  import { n, fmtMoneda, fmtNumero } from '../../lib/formato';
+  import { n, fmtMoneda, fmtNumero, fmtPct } from '../../lib/formato';
   import CampoNumero from './CampoNumero.svelte';
   import Resultados from './Resultados.svelte';
   import Comparar from './Comparar.svelte';
@@ -161,7 +161,7 @@
       ...base,
       usarUSD: esc.usarUSD,
       semanasTrabajadas: esc.semanasTrabajadas,
-      cancelacionPct: esc.cancelacionPct,
+      cancelacionesSemana: esc.cancelacionesSemana,
       horasAdminSemana: esc.horasAdminSemana,
     };
     cotizacionInfo = '';
@@ -535,18 +535,17 @@
       <div class="mt-5 grid gap-4 sm:grid-cols-2">
         <CampoNumero
           id="cancelaciones"
-          label="Cancelaciones / ausentismo"
-          sufijo="%"
-          max={100}
-          bind:value={esc.cancelacionPct}
-          ayuda="Sesiones que no se cobran pero ocupan tu agenda."
+          label="Sesiones que se te caen"
+          sufijo="/sem"
+          bind:value={esc.cancelacionesSemana}
+          ayuda={`Más o menos por semana, entre ausencias y cancelaciones. ≈ ${fmtPct(r.ausentismoPct)} de tus sesiones.`}
         />
         <CampoNumero
           id="admin"
           label="Horas administrativas"
           sufijo="h/sem"
           bind:value={esc.horasAdminSemana}
-          ayuda="Tiempo no facturable: registros, mails, coordinación."
+          ayuda="Registros, mails, coordinación, facturación… para muchos son entre 3 y 6 h por semana."
         />
       </div>
     </section>
