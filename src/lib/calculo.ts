@@ -1,7 +1,5 @@
-import type { Escenario, Resultado, TipoSesion } from './tipos';
+import type { Escenario, Resultado } from './tipos';
 import { n } from './formato';
-
-const TIPOS: TipoSesion[] = ['individual', 'parejaFamilia', 'grupo'];
 
 /**
  * Convierte un escenario en resultados. Función pura: mismos inputs → mismos
@@ -19,14 +17,19 @@ export function calcular(esc: Escenario): Resultado {
   const semanas = Math.max(0, n(esc.semanasTrabajadas));
   const factorAsistencia = clamp(1 - n(esc.cancelacionPct) / 100, 0, 1);
 
-  // Sesiones e ingreso semanal "pleno" (agenda completa, sin cancelaciones)
+  // Sesiones e ingreso semanal "pleno" (agenda completa, sin cancelaciones),
+  // sumando todos los grupos de honorarios.
   let sesionesSemanaTotal = 0;
   let brutoSemanalPleno = 0;
-  for (const t of TIPOS) {
-    const s = Math.max(0, n(esc.sesionesSemana[t]));
-    const h = Math.max(0, n(esc.honorarios[t]));
-    sesionesSemanaTotal += s;
-    brutoSemanalPleno += s * h;
+  let pacientesActivos = 0;
+  for (const g of esc.grupos ?? []) {
+    const cantidad = Math.max(0, n(g.cantidad));
+    const frecuencia = Math.max(0, n(g.frecuenciaSemanal));
+    const honorario = Math.max(0, n(g.honorario));
+    const sesiones = cantidad * frecuencia;
+    pacientesActivos += cantidad;
+    sesionesSemanaTotal += sesiones;
+    brutoSemanalPleno += sesiones * honorario;
   }
 
   const brutoSemanalFacturado = brutoSemanalPleno * factorAsistencia;
@@ -115,6 +118,7 @@ export function calcular(esc: Escenario): Resultado {
     horasTotalesSemana,
     sesionesSemanaTotal,
     sesionesFacturadasSemana,
+    pacientesActivos,
     margenNetoPct,
     meta,
   };

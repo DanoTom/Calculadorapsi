@@ -1,4 +1,4 @@
-import type { Escenario, Resultado, TipoSesion } from './tipos';
+import type { Escenario, Resultado } from './tipos';
 import { n } from './formato';
 
 /**
@@ -40,8 +40,6 @@ export const UMBRALES = {
   /** Pesos de cada factor (suman 1) */
   pesos: { carga: 0.35, margen: 0.25, descanso: 0.25, fragilidad: 0.15 },
 };
-
-const TIPOS: TipoSesion[] = ['individual', 'parejaFamilia', 'grupo'];
 
 function clamp(v: number, a: number, b: number): number {
   return Math.min(b, Math.max(a, v));
@@ -92,18 +90,18 @@ export function calcularSostenibilidad(esc: Escenario, r: Resultado): Sostenibil
         ? `Contemplás ${vacaciones} semanas de descanso al año: clave para sostener el trabajo clínico.`
         : `Tenés ${vacaciones} semanas de descanso al año. Sumar algunas más cuidaría tu continuidad.`;
 
-  // 4) Fragilidad (diversificación del ingreso por tipo de sesión)
-  const ingresoPorTipo = TIPOS.map(
-    (t) => Math.max(0, n(esc.sesionesSemana[t])) * Math.max(0, n(esc.honorarios[t]))
+  // 4) Fragilidad (dependencia de una sola fuente de honorario)
+  const ingresoPorGrupo = (esc.grupos ?? []).map(
+    (g) => Math.max(0, n(g.cantidad)) * Math.max(0, n(g.frecuenciaSemanal)) * Math.max(0, n(g.honorario))
   );
-  const totalIngreso = ingresoPorTipo.reduce((a, b) => a + b, 0);
-  const tiposConIngreso = ingresoPorTipo.filter((x) => x > 0).length;
+  const totalIngreso = ingresoPorGrupo.reduce((a, b) => a + b, 0);
+  const gruposConIngreso = ingresoPorGrupo.filter((x) => x > 0).length;
   let fragP: number;
   if (totalIngreso <= 0) {
     fragP = 0;
   } else {
-    // Índice de concentración (HHI): 1 = todo en un tipo; menor = más diverso
-    const hhi = ingresoPorTipo.reduce((a, x) => {
+    // Índice de concentración (HHI): 1 = todo en una fuente; menor = más diverso
+    const hhi = ingresoPorGrupo.reduce((a, x) => {
       const s = x / totalIngreso;
       return a + s * s;
     }, 0);
@@ -111,11 +109,11 @@ export function calcularSostenibilidad(esc: Escenario, r: Resultado): Sostenibil
   }
   const fragEstado = estadoDe(fragP);
   const fragMsg =
-    tiposConIngreso <= 1
-      ? `Tu ingreso depende de un solo tipo de sesión. Si esa fuente baja, no hay con qué compensar.`
-      : tiposConIngreso === 2
-        ? `Tu ingreso se reparte entre dos tipos de sesión: algo de diversificación que te da respaldo.`
-        : `Tu ingreso se reparte entre varios tipos de sesión: eso le da resiliencia a tu práctica.`;
+    gruposConIngreso <= 1
+      ? `Tu ingreso depende de una sola fuente. Si esos pacientes bajan, no hay con qué compensar.`
+      : fragEstado === 'bien'
+        ? `Tu ingreso se reparte entre varias fuentes: eso le da resiliencia a tu práctica.`
+        : `Tu ingreso está concentrado en una fuente principal. Equilibrarlo un poco te daría más respaldo.`;
 
   // Puntaje global ponderado
   const puntaje = Math.round(

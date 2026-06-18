@@ -26,8 +26,8 @@
     parejaFamilia: 'Pareja / Familia',
     grupo: 'Grupo',
   };
-  const tipos: TipoSesion[] = ['individual', 'parejaFamilia', 'grupo'];
-  const tiposActivos = $derived(tipos.filter((t) => n(esc.sesionesSemana[t]) > 0));
+  const frecLabel = (v: number) =>
+    v === 1 ? 'semanal' : v === 0.5 ? 'quincenal' : v === 2 ? '2x/sem' : v === 0.25 ? 'mensual' : `${v}/sem`;
   const vacaciones = $derived(Math.max(0, 52 - n(esc.semanasTrabajadas)));
 
   const gastosLista = $derived(
@@ -96,14 +96,17 @@
         <h2 style="font-family:'Fraunces Variable',serif; font-size:16px; margin:0 0 8px;">Tu esquema</h2>
         <table style="width:100%; border-collapse:collapse; font-size:12px;">
           <tbody>
-          {#each tiposActivos as t}
+          {#each esc.grupos as g}
             <tr>
-              <td style="padding:3px 0; color:#6e5f50;">{tiposNombre[t]}</td>
+              <td style="padding:3px 0; color:#6e5f50;">
+                {tiposNombre[g.tipo]}{g.etiqueta ? ` (${g.etiqueta})` : ''}
+              </td>
               <td style="padding:3px 0; text-align:right;">
-                {fmtNumero(n(esc.sesionesSemana[t]))}/sem · {fmtMoneda(n(esc.honorarios[t]), s)}
+                {fmtNumero(n(g.cantidad))} pac · {fmtMoneda(n(g.honorario), s)} · {frecLabel(g.frecuenciaSemanal)}
               </td>
             </tr>
           {/each}
+          <tr><td style="padding:3px 0; color:#6e5f50;">Pacientes / sesiones</td><td style="padding:3px 0; text-align:right;">{fmtNumero(r.pacientesActivos)} pac · {fmtNumero(r.sesionesSemanaTotal)}/sem</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Semanas trabajadas</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.semanasTrabajadas))} ({vacaciones} de descanso)</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Cancelaciones</td><td style="padding:3px 0; text-align:right;">{fmtPct(n(esc.cancelacionPct))}</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Horas admin.</td><td style="padding:3px 0; text-align:right;">{fmtNumero(n(esc.horasAdminSemana))} h/sem</td></tr>

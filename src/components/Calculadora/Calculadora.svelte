@@ -6,7 +6,7 @@
    */
   import { onMount } from 'svelte';
   import type { Escenario, TipoSesion } from '../../lib/tipos';
-  import { escenarioInicial, presetPorCodigo, PAISES } from '../../lib/presets';
+  import { escenarioInicial, presetPorCodigo, PAISES, nuevoGrupoId } from '../../lib/presets';
   import { calcular } from '../../lib/calculo';
   import { calcularSostenibilidad } from '../../lib/sostenibilidad';
   import { traerCotizacionARS } from '../../lib/cotizacion';
@@ -17,7 +17,7 @@
     eliminarEscenario,
     type EscenarioGuardado,
   } from '../../lib/storage';
-  import { n, fmtMoneda } from '../../lib/formato';
+  import { n, fmtMoneda, fmtNumero } from '../../lib/formato';
   import CampoNumero from './CampoNumero.svelte';
   import Resultados from './Resultados.svelte';
   import Comparar from './Comparar.svelte';
@@ -35,6 +35,33 @@
     { clave: 'parejaFamilia', nombre: 'Pareja / Familia' },
     { clave: 'grupo', nombre: 'Grupo' },
   ];
+
+  const frecuencias: { valor: number; nombre: string }[] = [
+    { valor: 1, nombre: '1 vez por semana' },
+    { valor: 0.5, nombre: 'Cada 15 días' },
+    { valor: 2, nombre: '2 veces por semana' },
+    { valor: 0.25, nombre: '1 vez al mes' },
+  ];
+
+  function agregarGrupo() {
+    const ultimo = esc.grupos[esc.grupos.length - 1];
+    esc.grupos = [
+      ...esc.grupos,
+      {
+        id: nuevoGrupoId(),
+        tipo: 'individual',
+        etiqueta: '',
+        cantidad: 1,
+        honorario: ultimo ? ultimo.honorario : preset.honorarioIndividualEjemplo,
+        frecuenciaSemanal: 1,
+      },
+    ];
+  }
+
+  function eliminarGrupo(id: string) {
+    if (esc.grupos.length <= 1) return;
+    esc.grupos = esc.grupos.filter((g) => g.id !== id);
+  }
 
   let cotizacionInfo = $state('');
   let cargandoCotizacion = $state(false);
@@ -113,14 +140,15 @@
     }
   }
 
-  /** Cambiar de país reinicia los valores en moneda local (no la estructura). */
+  /**
+   * Cambiar de país reinicia los valores en moneda local (honorarios, gastos)
+   * al ejemplo del país nuevo, pero conserva tu ritmo de trabajo.
+   */
   function cambiarPais(codigo: string) {
     const base = escenarioInicial(codigo);
     esc = {
       ...base,
       usarUSD: esc.usarUSD,
-      pacientesActivos: esc.pacientesActivos,
-      sesionesSemana: { ...esc.sesionesSemana },
       semanasTrabajadas: esc.semanasTrabajadas,
       cancelacionPct: esc.cancelacionPct,
       horasAdminSemana: esc.horasAdminSemana,
@@ -378,37 +406,82 @@
     <!-- Esquema de trabajo -->
     <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">Tu esquema de trabajo</h3>
-      <p class="mt-1 text-sm text-tinta-500">Honorario y cantidad de sesiones por tipo.</p>
+      <p class="mt-1 text-sm text-tinta-500">
+        Agrupá a tus pacientes por honorario. ¿Cobrás distinto a algunos? Agregá un grupo.
+      </p>
 
       <div class="mt-4 space-y-3">
-        {#each tipos as t}
+        {#each esc.grupos as grupo (grupo.id)}
           <div class="rounded-2xl border border-crema-100 bg-crema-50 p-3">
-            <p class="mb-2 text-sm font-semibold text-tinta-800">{t.nombre}</p>
+            <div class="mb-3 flex items-center gap-2">
+              <select
+                bind:value={grupo.tipo}
+                aria-label="Tipo de sesión"
+                class="rounded-lg border border-crema-200 bg-white px-2.5 py-2 text-sm font-medium text-tinta-800 outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100"
+              >
+                {#each tipos as t}
+                  <option value={t.clave}>{t.nombre}</option>
+                {/each}
+              </select>
+              <input
+                bind:value={grupo.etiqueta}
+                placeholder="Etiqueta (opcional)"
+                aria-label="Etiqueta del grupo"
+                class="min-w-0 flex-1 rounded-lg border border-crema-200 bg-white px-2.5 py-2 text-sm text-tinta-800 outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100"
+              />
+              {#if esc.grupos.length > 1}
+                <button
+                  type="button"
+                  onclick={() => eliminarGrupo(grupo.id)}
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-tinta-500 hover:bg-crema-100 hover:text-arcilla-500"
+                  aria-label="Eliminar grupo"
+                >
+                  ✕
+                </button>
+              {/if}
+            </div>
             <div class="grid grid-cols-2 gap-3">
+              <CampoNumero id={`cant-${grupo.id}`} label="Pacientes" bind:value={grupo.cantidad} />
               <CampoNumero
-                id={`hon-${t.clave}`}
+                id={`hon-${grupo.id}`}
                 label="Honorario"
                 prefijo={preset.simbolo}
                 step={100}
-                bind:value={esc.honorarios[t.clave]}
+                bind:value={grupo.honorario}
               />
-              <CampoNumero
-                id={`ses-${t.clave}`}
-                label="Sesiones/semana"
-                bind:value={esc.sesionesSemana[t.clave]}
-              />
+            </div>
+            <div class="mt-3">
+              <label for={`frec-${grupo.id}`} class="block text-sm font-medium text-tinta-700">
+                Frecuencia
+              </label>
+              <select
+                id={`frec-${grupo.id}`}
+                bind:value={grupo.frecuenciaSemanal}
+                class="mt-1.5 w-full rounded-xl border border-crema-200 bg-white px-3.5 py-2.5 text-base text-tinta-900 outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100"
+              >
+                {#each frecuencias as f}
+                  <option value={f.valor}>{f.nombre}</option>
+                {/each}
+              </select>
             </div>
           </div>
         {/each}
       </div>
 
+      <button
+        type="button"
+        onclick={agregarGrupo}
+        class="mt-3 w-full rounded-xl border border-dashed border-crema-300 px-4 py-2.5 text-sm font-semibold text-tinta-700 transition-colors hover:bg-crema-100"
+      >
+        + Agregar grupo de honorario
+      </button>
+
+      <p class="mt-3 rounded-lg bg-crema-50 px-3 py-2 text-sm text-tinta-600">
+        <strong class="text-tinta-900">{r.pacientesActivos}</strong> pacientes ·
+        <strong class="text-tinta-900">{fmtNumero(r.sesionesSemanaTotal)}</strong> sesiones por semana
+      </p>
+
       <div class="mt-4 grid gap-4 sm:grid-cols-2">
-        <CampoNumero
-          id="pacientes"
-          label="Pacientes activos"
-          bind:value={esc.pacientesActivos}
-          ayuda="Para contexto y, más adelante, tu sostenibilidad."
-        />
         <CampoNumero
           id="semanas"
           label="Semanas trabajadas al año"

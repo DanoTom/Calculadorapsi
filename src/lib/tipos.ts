@@ -2,6 +2,24 @@
 
 export type TipoSesion = 'individual' | 'parejaFamilia' | 'grupo';
 
+/**
+ * Un grupo de honorario: pacientes que pagan lo mismo y van con la misma
+ * frecuencia. Permite reflejar que se cobra distinto a distintos pacientes
+ * (tarifa plena, reducida, pareja, etc.) sin cargar paciente por paciente.
+ */
+export interface GrupoHonorario {
+  id: string;
+  tipo: TipoSesion;
+  /** Nombre opcional para reconocerlo (ej. "reducido", "obra social") */
+  etiqueta: string;
+  /** Cantidad de pacientes en este grupo */
+  cantidad: number;
+  /** Honorario por sesión (moneda local) */
+  honorario: number;
+  /** Sesiones por semana por paciente: 1 semanal, 0.5 quincenal, 2, 0.25 mensual */
+  frecuenciaSemanal: number;
+}
+
 /** Un "escenario" es todo lo que el usuario carga. Se guarda/serializa entero. */
 export interface Escenario {
   /** Versión del modelo de datos (para no romper links viejos a futuro) */
@@ -13,13 +31,8 @@ export interface Escenario {
   /** Cuántas unidades de moneda local equivalen a 1 USD */
   cotizacionUSD: number;
 
-  /** Pacientes activos (contexto; aporta a la lectura de sostenibilidad) */
-  pacientesActivos: number;
-
-  /** Honorario por sesión, según tipo (en moneda local) */
-  honorarios: Record<TipoSesion, number>;
-  /** Sesiones por semana, según tipo */
-  sesionesSemana: Record<TipoSesion, number>;
+  /** Grupos de honorarios (cada uno con su tarifa y frecuencia) */
+  grupos: GrupoHonorario[];
 
   /** Semanas efectivamente trabajadas al año (52 menos vacaciones) */
   semanasTrabajadas: number;
@@ -60,6 +73,8 @@ export interface Resultado {
   horasTotalesSemana: number;
   sesionesSemanaTotal: number;
   sesionesFacturadasSemana: number;
+  /** Pacientes activos (suma de todos los grupos) */
+  pacientesActivos: number;
 
   /** Margen neto = neto / bruto (en %) */
   margenNetoPct: number;

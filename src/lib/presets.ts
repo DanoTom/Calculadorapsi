@@ -92,21 +92,33 @@ export function presetPorCodigo(codigo: string): Preset {
   return PAISES.find((p) => p.codigo === codigo) ?? PAISES[0];
 }
 
-/** Crea un escenario inicial poblado con el ejemplo del país. */
+/** Crea un escenario inicial poblado con un ejemplo del país (dos grupos). */
 export function escenarioInicial(codigo = 'AR'): Escenario {
   const p = presetPorCodigo(codigo);
+  const pleno = p.honorarioIndividualEjemplo;
   return {
-    version: 1,
+    version: 2,
     pais: p.codigo,
     usarUSD: false,
     cotizacionUSD: p.cotizacionUSDsugerida,
-    pacientesActivos: 18,
-    honorarios: {
-      individual: p.honorarioIndividualEjemplo,
-      parejaFamilia: Math.round(p.honorarioIndividualEjemplo * 1.4),
-      grupo: 0,
-    },
-    sesionesSemana: { individual: 18, parejaFamilia: 0, grupo: 0 },
+    grupos: [
+      {
+        id: 'g1',
+        tipo: 'individual',
+        etiqueta: '',
+        cantidad: 12,
+        honorario: pleno,
+        frecuenciaSemanal: 1,
+      },
+      {
+        id: 'g2',
+        tipo: 'individual',
+        etiqueta: 'reducido',
+        cantidad: 6,
+        honorario: Math.round(pleno * 0.65),
+        frecuenciaSemanal: 0.5,
+      },
+    ],
     semanasTrabajadas: 46,
     cancelacionPct: 10,
     horasAdminSemana: 5,
@@ -114,4 +126,11 @@ export function escenarioInicial(codigo = 'AR'): Escenario {
     impuestoPct: p.impuestoPctSugerido,
     metaNetaMensual: 0,
   };
+}
+
+/** Genera un id único para un grupo nuevo creado en tiempo de ejecución. */
+export function nuevoGrupoId(): string {
+  return typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : 'g' + Date.now().toString(36);
 }

@@ -35,8 +35,7 @@ export function deserializarEscenario(s: string): Escenario | null {
     return {
       ...base,
       ...data,
-      honorarios: { ...base.honorarios, ...(data.honorarios ?? {}) },
-      sesionesSemana: { ...base.sesionesSemana, ...(data.sesionesSemana ?? {}) },
+      grupos: Array.isArray(data.grupos) && data.grupos.length > 0 ? data.grupos : base.grupos,
       gastos: { ...base.gastos, ...(data.gastos ?? {}) },
       version: base.version,
     } as Escenario;
