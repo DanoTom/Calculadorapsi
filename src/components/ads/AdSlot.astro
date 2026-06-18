@@ -26,14 +26,19 @@ const activo = SITE.ads.enabled && Boolean(SITE.ads.client);
 >
   {
     activo ? (
-      <ins
-        class="adsbygoogle block"
-        style={`display:block;min-height:${minHeight}`}
-        data-ad-client={SITE.ads.client}
-        data-ad-slot={slot}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      />
+      <Fragment>
+        <ins
+          class="adsbygoogle block"
+          style={`display:block;min-height:${minHeight}`}
+          data-ad-client={SITE.ads.client}
+          data-ad-slot={slot}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+        <script is:inline>
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </Fragment>
     ) : (
       <div
         class="flex h-full w-full items-center justify-center rounded-xl border border-dashed border-crema-300 text-xs text-tinta-400 select-none"

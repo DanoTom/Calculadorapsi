@@ -55,9 +55,24 @@ src/
    - **Build output directory:** `dist`
 5. **Save and Deploy**. Cada push a la rama principal vuelve a desplegar solo.
 
-## Pendientes conocidos
+## Activar Google AdSense (cuando tengas la cuenta aprobada)
 
-- La imagen para compartir (`public/og-default.svg`) es un placeholder; conviene
-  reemplazarla por un PNG 1200×630 en el hito de SEO (WhatsApp prefiere PNG/JPG).
-- La calculadora es por ahora una vista previa; la versión funcional llega en el
-  próximo hito.
+En `site.config.ts`, dentro de `ads`:
+
+1. Poné `enabled: true`.
+2. Pegá tu `client` (ej. `ca-pub-XXXXXXXXXXXXXXXX`).
+
+Eso enciende el script de AdSense, los bloques de anuncios y el banner de
+cookies. Mientras `enabled` sea `false`, el sitio reserva el espacio pero no
+carga nada (no rompe ni afecta la velocidad).
+
+> AdSense también pide un archivo `ads.txt` en la raíz con tu publisher id.
+> Cuando lo tengas, creá `public/ads.txt` con la línea que te indique Google.
+
+## Regenerar la imagen para compartir
+
+Si cambiás `public/og-default.svg`, regenerá el PNG (lo que ven WhatsApp y redes):
+
+```bash
+node -e "const s=require('sharp'),f=require('fs');s(f.readFileSync('public/og-default.svg'),{density:150}).resize(1200,630).png().toFile('public/og-default.png').then(()=>console.log('ok'))"
+```

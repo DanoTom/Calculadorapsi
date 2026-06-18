@@ -1,0 +1,19 @@
+---
+/**
+ * Carga el script de Google AdSense en el <head>, solo si los anuncios están
+ * activados (site.config.ts) y hay un client id. Apagado por defecto.
+ */
+import { SITE } from '../../../site.config';
+const activo = SITE.ads.enabled && Boolean(SITE.ads.client);
+---
+
+{
+  activo && (
+    <script
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.ads.client}`}
+      crossorigin="anonymous"
+      is:inline
+    />
+  )
+}
