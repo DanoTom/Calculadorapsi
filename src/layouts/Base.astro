@@ -1,0 +1,58 @@
+---
+/**
+ * Layout base de todas las páginas: estructura HTML, <head> con SEO,
+ * encabezado, contenido (slot) y pie. Las páginas solo aportan su contenido
+ * y sus metadatos.
+ */
+import '../styles/global.css';
+import { SITE } from '../../site.config';
+import SEO from '../components/seo/SEO.astro';
+import Header from '../components/ui/Header.astro';
+import Footer from '../components/ui/Footer.astro';
+import Analytics from '../components/ui/Analytics.astro';
+import CookieBanner from '../components/ui/CookieBanner.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const { title, description, image, type, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#fcf9f4" />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO title={title} description={description} image={image} type={type} noindex={noindex} />
+    <Analytics />
+
+    <!-- Las páginas pueden inyectar etiquetas extra en el <head> (ej. JSON-LD) -->
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-terracota-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-crema-50"
+    >
+      Saltar al contenido
+    </a>
+
+    <Header />
+
+    <main id="contenido" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+    <CookieBanner />
+  </body>
+</html>

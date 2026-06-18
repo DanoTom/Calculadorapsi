@@ -1,0 +1,190 @@
+@import 'tailwindcss';
+
+/* Fuentes self-hosted (sin pings a Google, mejor privacidad y velocidad) */
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+
+/*
+  Tema CalculadoraPsi — cálido, clínico-amable, confiable.
+  En Tailwind v4 el tema se define acá con variables CSS y genera las
+  utilidades automáticamente (ej. bg-crema-50, text-tinta-900, etc.).
+*/
+@theme {
+  /* Tipografía */
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+
+  /* Crema — fondos cálidos */
+  --color-crema-50: #fcf9f4;
+  --color-crema-100: #f6efe5;
+  --color-crema-200: #ecdfce;
+  --color-crema-300: #ddc9b0;
+
+  /* Tinta — textos cálidos (en vez de gris/negro frío) */
+  --color-tinta-400: #a99a89;
+  --color-tinta-500: #8c7c6b;
+  --color-tinta-600: #6e5f50;
+  --color-tinta-700: #54473a;
+  --color-tinta-800: #3b3026;
+  --color-tinta-900: #2c241c;
+
+  /* Terracota — acento principal, cálido y confiable */
+  --color-terracota-50: #fbeee9;
+  --color-terracota-100: #f5d8cd;
+  --color-terracota-200: #eab5a3;
+  --color-terracota-300: #de9279;
+  --color-terracota-400: #d4775b;
+  --color-terracota-500: #c75d45;
+  --color-terracota-600: #ad4a35;
+  --color-terracota-700: #8c3a2a;
+
+  /* Salvia — señal de "sano / sostenible" */
+  --color-salvia-50: #edf3ee;
+  --color-salvia-100: #d6e5d9;
+  --color-salvia-400: #7ca386;
+  --color-salvia-500: #5e8c6a;
+  --color-salvia-600: #4a7355;
+
+  /* Ámbar — señal de "atención / precaución" */
+  --color-ambar-50: #fbf2e2;
+  --color-ambar-100: #f5e0bf;
+  --color-ambar-400: #e0a95b;
+  --color-ambar-500: #ce8e3c;
+  --color-ambar-600: #ab7129;
+
+  /* Arcilla — señal de "riesgo" (rojo cálido, nada estridente) */
+  --color-arcilla-50: #f7e7e4;
+  --color-arcilla-400: #c76a5d;
+  --color-arcilla-500: #b5483a;
+  --color-arcilla-600: #97392d;
+
+  /* Radios y sombras suaves */
+  --radius-xl2: 1.25rem;
+  --shadow-suave: 0 1px 2px rgba(44, 36, 28, 0.04), 0 8px 24px -12px rgba(44, 36, 28, 0.12);
+  --shadow-tarjeta: 0 1px 3px rgba(44, 36, 28, 0.06), 0 12px 32px -16px rgba(44, 36, 28, 0.14);
+}
+
+/* Base global */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-crema-50);
+  color: var(--color-tinta-900);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv05', 'ss01';
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-tinta-900);
+}
+
+/* Foco visible y accesible en todo lo interactivo (teclado) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-terracota-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respetar a quien prefiere menos animación */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utilidad: ancho de lectura cómodo */
+.contenedor {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .contenedor {
+    padding-inline: 2rem;
+  }
+}
+
+/* Estilos de texto largo (guías, privacidad, sobre) */
+.prosa {
+  max-width: 42rem;
+  margin-inline: auto;
+  color: var(--color-tinta-700);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prosa > * + * {
+  margin-top: 1.1em;
+}
+.prosa h2 {
+  margin-top: 2em;
+  font-size: 1.6rem;
+}
+.prosa h3 {
+  margin-top: 1.6em;
+  font-size: 1.25rem;
+}
+.prosa a {
+  color: var(--color-terracota-600);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prosa a:hover {
+  color: var(--color-terracota-700);
+}
+.prosa ul,
+.prosa ol {
+  padding-left: 1.4em;
+}
+.prosa ul {
+  list-style: disc;
+}
+.prosa ol {
+  list-style: decimal;
+}
+.prosa li + li {
+  margin-top: 0.4em;
+}
+.prosa blockquote {
+  border-left: 3px solid var(--color-terracota-300);
+  padding-left: 1em;
+  color: var(--color-tinta-600);
+  font-style: italic;
+}
+.prosa strong {
+  color: var(--color-tinta-900);
+  font-weight: 600;
+}
+.prosa code {
+  background: var(--color-crema-100);
+  padding: 0.15em 0.4em;
+  border-radius: 0.4em;
+  font-size: 0.9em;
+}
+
+/* Lo que solo se ve para lectores de pantalla (accesibilidad) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

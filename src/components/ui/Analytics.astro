@@ -1,0 +1,22 @@
+---
+/**
+ * Cloudflare Web Analytics: analítica sin cookies, respetuosa de la privacidad.
+ * Solo se inserta si hay un token configurado en site.config.ts.
+ * En desarrollo no se carga (solo en el sitio publicado).
+ */
+import { SITE } from '../../../site.config';
+
+const token = SITE.analytics.cloudflareToken;
+const activo = Boolean(token) && import.meta.env.PROD;
+---
+
+{
+  activo && (
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={`{"token": "${token}"}`}
+      is:inline
+    />
+  )
+}

@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { T } from '../lib/strings';
+---
+
+<Base
+  title="Sobre el proyecto"
+  description="Por qué existe CalculadoraPsi: una herramienta hecha para que los psicólogos entiendan y cuiden la sostenibilidad de su práctica."
+>
+  <article class="contenedor py-12">
+    <header class="mx-auto max-w-2xl">
+      <h1 class="text-4xl font-semibold">Sobre el proyecto</h1>
+      <p class="mt-3 text-lg text-tinta-600">{T.marca.tagline}</p>
+    </header>
+
+    <div class="prosa mt-8">
+      <!-- Texto de base: personalizalo con tu voz y tu historia. -->
+      <p>
+        {T.marca.nombre} nació de una pregunta simple que muchos colegas se hacen en voz
+        baja: <em>¿mi forma de trabajar es sostenible para mí?</em> No solo cuánto facturo,
+        sino si el ritmo que llevo me deja vivir bien.
+      </p>
+
+      <h2>Qué hace</h2>
+      <p>
+        Es una calculadora gratuita que traduce tu práctica clínica en números claros:
+        tu ingreso neto real, lo que ganás por hora de verdad (contando la administración y
+        los huecos) y un índice de sostenibilidad que mira tu carga, tu descanso y tus
+        márgenes con mirada de colega, no de planilla.
+      </p>
+
+      <h2>En qué creemos</h2>
+      <ul>
+        <li>Que la información clara reduce la ansiedad y mejora las decisiones.</li>
+        <li>Que cuidar tus ingresos es parte de cuidar tu trabajo clínico.</li>
+        <li>Que una herramienta puede ser gratuita, privada y estar bien hecha.</li>
+      </ul>
+
+      <h2>Lo que no es</h2>
+      <p>
+        No es asesoramiento contable ni financiero. Es una estimación orientativa para
+        pensar mejor. Para tu situación particular, siempre conviene hablar con un
+        profesional.
+      </p>
+
+      <p>
+        <a href="/#calculadora">Probá la calculadora →</a>
+      </p>
+    </div>
+  </article>
+</Base>

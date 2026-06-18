@@ -1,0 +1,29 @@
+---
+/**
+ * Logo de la marca: la letra ψ (psi, símbolo de la psicología) en un sello
+ * cálido, junto al nombre. El tamaño del sello se controla con `size`.
+ */
+interface Props {
+  size?: number;
+  conTexto?: boolean;
+  class?: string;
+}
+const { size = 36, conTexto = true, class: clase = '' } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-2.5', clase]}>
+  <span
+    class="inline-flex shrink-0 items-center justify-center rounded-xl bg-terracota-500 font-display font-semibold text-crema-50 shadow-suave"
+    style={`width:${size}px;height:${size}px;font-size:${Math.round(size * 0.6)}px;line-height:1`}
+    aria-hidden="true"
+  >
+    ψ
+  </span>
+  {
+    conTexto && (
+      <span class="font-display text-xl font-semibold tracking-tight text-tinta-900">
+        Calculadora<span class="text-terracota-500">Psi</span>
+      </span>
+    )
+  }
+</span>

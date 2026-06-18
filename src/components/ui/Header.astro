@@ -1,0 +1,93 @@
+---
+/**
+ * Encabezado del sitio. Mobile-first:
+ * - En celular: logo + botón principal "Calcular", y un menú desplegable
+ *   (con <details>, sin JavaScript) para las demás secciones.
+ * - En pantallas grandes: navegación completa a la derecha.
+ */
+import Logo from './Logo.astro';
+import { T } from '../../lib/strings';
+
+const rutaActual = Astro.url.pathname;
+const enInicio = rutaActual === '/' || rutaActual === '';
+
+const links = [
+  { href: '/#calculadora', texto: T.nav.calculadora },
+  { href: '/guias', texto: T.nav.guias },
+  { href: '/sobre', texto: T.nav.sobre },
+];
+---
+
+<header class="sticky top-0 z-40 border-b border-crema-200/70 bg-crema-50/85 backdrop-blur-md">
+  <div class="contenedor flex h-16 items-center justify-between gap-4">
+    <a href="/" class="rounded-lg" aria-label="Ir al inicio de CalculadoraPsi">
+      <Logo />
+    </a>
+
+    <!-- Navegación de escritorio -->
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Navegación principal">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="rounded-lg px-3 py-2 text-sm font-medium text-tinta-700 transition-colors hover:bg-crema-100 hover:text-tinta-900"
+          >
+            {l.texto}
+          </a>
+        ))
+      }
+      <a
+        href="/#calculadora"
+        class="ml-2 rounded-xl bg-terracota-500 px-4 py-2 text-sm font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-600"
+      >
+        {T.nav.irACalcular}
+      </a>
+    </nav>
+
+    <!-- Navegación de celular -->
+    <div class="flex items-center gap-2 md:hidden">
+      {
+        enInicio ? null : (
+          <a
+            href="/#calculadora"
+            class="rounded-xl bg-terracota-500 px-3.5 py-2 text-sm font-semibold text-crema-50 shadow-suave"
+          >
+            Calcular
+          </a>
+        )
+      }
+      <details class="menu-movil relative">
+        <summary
+          class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-xl border border-crema-200 bg-crema-50 text-tinta-800"
+          aria-label="Abrir menú"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </summary>
+        <nav
+          class="absolute right-0 mt-2 w-56 rounded-2xl border border-crema-200 bg-crema-50 p-2 shadow-tarjeta"
+          aria-label="Navegación principal"
+        >
+          {
+            links.map((l) => (
+              <a
+                href={l.href}
+                class="block rounded-lg px-3 py-2.5 text-sm font-medium text-tinta-700 hover:bg-crema-100 hover:text-tinta-900"
+              >
+                {l.texto}
+              </a>
+            ))
+          }
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Oculta el triangulito por defecto de <summary> */
+  .menu-movil > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

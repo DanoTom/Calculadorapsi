@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../../site.config';
+
+const actualizado = '18 de junio de 2026';
+---
+
+<Base
+  title="Política de privacidad"
+  description="Cómo CalculadoraPsi maneja (y no maneja) tus datos. Sin backend, sin cuentas, con analítica anónima."
+>
+  <article class="contenedor py-12">
+    <header class="mx-auto max-w-2xl">
+      <h1 class="text-4xl font-semibold">Política de privacidad</h1>
+      <p class="mt-3 text-sm text-tinta-500">Última actualización: {actualizado}</p>
+    </header>
+
+    <div class="prosa mt-8">
+      <p>
+        En {SITE.name} cuidamos tu privacidad con la misma seriedad con la que vos cuidás
+        la de tus pacientes. Esta herramienta está pensada para funcionar sin pedirte
+        cuenta, sin contraseñas y sin guardar tus números en ningún servidor.
+      </p>
+
+      <h2>Qué datos recolectamos</h2>
+      <p>
+        <strong>Ninguno de tus datos personales ni de tu práctica.</strong> Los valores que
+        cargás en la calculadora se procesan en tu propio dispositivo y no se envían a
+        ningún servidor nuestro. No tenemos base de datos de usuarios.
+      </p>
+
+      <h2>Almacenamiento local (localStorage)</h2>
+      <p>
+        Si guardás un escenario, se almacena en el <em>localStorage</em> de tu navegador:
+        un espacio privado dentro de tu propio dispositivo. Podés borrarlo en cualquier
+        momento limpiando los datos del sitio en tu navegador. Nosotros no accedemos a eso.
+      </p>
+
+      <h2>Cotización del dólar (Argentina)</h2>
+      <p>
+        Para estimar valores en dólares en Argentina, la herramienta puede consultar la
+        API pública de <a href="https://dolarapi.com" rel="noopener nofollow">dolarapi.com</a>.
+        Esa consulta no incluye ningún dato tuyo; solo trae la cotización del día.
+      </p>
+
+      <h2>Analítica</h2>
+      <p>
+        Usamos Cloudflare Web Analytics, una herramienta de medición que
+        <strong>no utiliza cookies</strong> y no recopila información personal identificable.
+        Nos sirve para saber cuántas personas visitan el sitio y qué páginas son útiles,
+        de forma anónima y agregada.
+      </p>
+
+      <h2>Publicidad</h2>
+      <p>
+        Para mantener la herramienta gratuita, en el futuro podríamos mostrar anuncios a
+        través de Google AdSense. Cuando eso ocurra, proveedores externos como Google
+        podrían usar cookies para mostrar avisos en función de tus visitas a este y otros
+        sitios. Podés conocer y administrar tus preferencias en la
+        <a href="https://policies.google.com/technologies/ads" rel="noopener nofollow">
+          configuración de anuncios de Google</a>. En las regiones donde corresponde, te
+        pediremos tu consentimiento antes de activar estas cookies.
+      </p>
+
+      <h2>Tus opciones</h2>
+      <ul>
+        <li>Podés usar toda la herramienta sin aceptar cookies de publicidad.</li>
+        <li>Podés borrar tus escenarios guardados limpiando los datos del navegador.</li>
+        <li>Podés navegar en modo incógnito si preferís no guardar nada.</li>
+      </ul>
+
+      <h2>Cambios en esta política</h2>
+      <p>
+        Si actualizamos esta política, vamos a cambiar la fecha de arriba. Te sugerimos
+        revisarla de vez en cuando.
+      </p>
+
+      <h2>Contacto</h2>
+      <p>
+        Si tenés dudas sobre privacidad, escribinos
+        {SITE.social.email ? <>a <a href={`mailto:${SITE.social.email}`}>{SITE.social.email}</a></> : 'desde la sección de contacto'}.
+      </p>
+
+      <p class="text-sm text-tinta-500">
+        Nota: esta política es un texto de base y debería ser revisada según la legislación
+        que aplique a tu caso. No constituye asesoramiento legal.
+      </p>
+    </div>
+  </article>
+</Base>

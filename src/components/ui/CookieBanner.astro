@@ -1,0 +1,59 @@
+---
+/**
+ * Banner de consentimiento de cookies. Solo aparece cuando se activan los
+ * anuncios (AdSense), que es cuando el consentimiento es legalmente relevante.
+ * Recuerda la elección del usuario en localStorage. JavaScript mínimo e inline.
+ */
+import { SITE } from '../../../site.config';
+import { T } from '../../lib/strings';
+
+const mostrar = SITE.ads.enabled;
+---
+
+{
+  mostrar && (
+    <div
+      id="cookie-banner"
+      hidden
+      class="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-2xl rounded-2xl border border-crema-200 bg-crema-50 p-4 shadow-tarjeta sm:p-5"
+      role="dialog"
+      aria-label="Aviso de cookies"
+    >
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm leading-relaxed text-tinta-700">
+          {T.cookies.texto}{' '}
+          <a href="/privacidad" class="font-medium text-terracota-600 underline">
+            {T.cookies.masInfo}
+          </a>
+        </p>
+        <button
+          id="cookie-aceptar"
+          class="shrink-0 rounded-xl bg-terracota-500 px-4 py-2 text-sm font-semibold text-crema-50 transition-colors hover:bg-terracota-600"
+        >
+          {T.cookies.aceptar}
+        </button>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var clave = 'cpsi-cookies-ok';
+        var banner = document.getElementById('cookie-banner');
+        if (!banner) return;
+        try {
+          if (localStorage.getItem(clave) !== '1') banner.hidden = false;
+        } catch (e) {
+          banner.hidden = false;
+        }
+        var btn = document.getElementById('cookie-aceptar');
+        if (btn)
+          btn.addEventListener('click', function () {
+            try {
+              localStorage.setItem(clave, '1');
+            } catch (e) {}
+            banner.hidden = true;
+          });
+      })();
+    </script>
+  )
+}

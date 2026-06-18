@@ -1,0 +1,53 @@
+---
+/**
+ * Componente de SEO: genera meta tags, Open Graph (vista previa en WhatsApp,
+ * redes) y Twitter Cards. Se usa desde el Layout base.
+ */
+import { SITE } from '../../../site.config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Ruta de imagen para la vista previa (relativa a /public o absoluta) */
+  image?: string;
+  /** Tipo de Open Graph: 'website' o 'article' */
+  type?: 'website' | 'article';
+  /** Evitar que buscadores indexen esta página */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = '/og-default.svg',
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+// Título completo: "Sección · CalculadoraPsi" (o solo la marca en el home)
+const tituloCompleto = title ? `${title} · ${SITE.name}` : `${SITE.name} — ${SITE.description.split('.')[0]}`;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const imagenAbsoluta = new URL(image, SITE.url).href;
+---
+
+<!-- Básico -->
+<title>{tituloCompleto}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={tituloCompleto} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imagenAbsoluta} />
+<meta property="og:locale" content="es_LA" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={tituloCompleto} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imagenAbsoluta} />
