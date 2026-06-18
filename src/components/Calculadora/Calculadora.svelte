@@ -63,6 +63,17 @@
     esc.grupos = esc.grupos.filter((g) => g.id !== id);
   }
 
+  // Descanso/vacaciones en opciones rápidas (más natural que "semanas trabajadas")
+  const descansoPresets = [
+    { label: '2 semanas', semanas: 2 },
+    { label: '1 mes', semanas: 4 },
+    { label: 'Mes y medio', semanas: 6 },
+    { label: '2 meses', semanas: 8 },
+  ];
+  function setDescanso(semanasDescanso: number) {
+    esc.semanasTrabajadas = Math.max(0, 52 - semanasDescanso);
+  }
+
   let cotizacionInfo = $state('');
   let cargandoCotizacion = $state(false);
 
@@ -481,14 +492,47 @@
         <strong class="text-tinta-900">{fmtNumero(r.sesionesSemanaTotal)}</strong> sesiones por semana
       </p>
 
-      <div class="mt-4 grid gap-4 sm:grid-cols-2">
-        <CampoNumero
-          id="semanas"
-          label="Semanas trabajadas al año"
-          max={52}
-          bind:value={esc.semanasTrabajadas}
-          ayuda={`Equivale a ${vacaciones} semanas de descanso.`}
-        />
+      <!-- Descanso / vacaciones (en lenguaje humano, no "semanas trabajadas") -->
+      <div class="mt-5">
+        <p class="text-sm font-medium text-tinta-700">¿Cuánto descansás al año?</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {#each descansoPresets as d}
+            <button
+              type="button"
+              onclick={() => setDescanso(d.semanas)}
+              aria-pressed={vacaciones === d.semanas}
+              class:bg-terracota-600={vacaciones === d.semanas}
+              class:text-crema-50={vacaciones === d.semanas}
+              class:border-transparent={vacaciones === d.semanas}
+              class="rounded-xl border border-crema-200 bg-white px-3.5 py-2 text-sm font-medium text-tinta-700 transition-colors hover:bg-crema-100"
+            >
+              {d.label}
+            </button>
+          {/each}
+        </div>
+        <div class="mt-2.5 flex items-center gap-2">
+          <label for="descanso-exacto" class="text-sm text-tinta-500">o exactas</label>
+          <input
+            id="descanso-exacto"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            max="52"
+            value={vacaciones}
+            onfocus={(e) => e.currentTarget.select()}
+            oninput={(e) =>
+              setDescanso(e.currentTarget.value === '' ? 0 : e.currentTarget.valueAsNumber)}
+            class="w-16 rounded-lg border border-crema-200 bg-white px-2 py-1.5 text-center text-base text-tinta-900 outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          <span class="text-sm text-tinta-500">semanas</span>
+        </div>
+        <p class="mt-2 text-xs text-tinta-600">
+          → Trabajás unas <strong class="text-tinta-900">{fmtNumero(esc.semanasTrabajadas)}</strong>
+          semanas al año.
+        </p>
+      </div>
+
+      <div class="mt-5 grid gap-4 sm:grid-cols-2">
         <CampoNumero
           id="cancelaciones"
           label="Cancelaciones / ausentismo"
