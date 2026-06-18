@@ -21,6 +21,7 @@
   import CampoNumero from './CampoNumero.svelte';
   import Resultados from './Resultados.svelte';
   import Comparar from './Comparar.svelte';
+  import ResumenImprimible from './ResumenImprimible.svelte';
 
   let esc = $state<Escenario>(escenarioInicial('AR'));
 
@@ -482,3 +483,6 @@
     <Resultados {r} {sost} simbolo={preset.simbolo} usarUSD={esc.usarUSD} cotizacion={esc.cotizacionUSD} />
   </div>
 </div>
+
+<!-- Hoja imprimible (oculta en pantalla; se ve al exportar PDF) -->
+<ResumenImprimible {esc} {r} {sost} {preset} />

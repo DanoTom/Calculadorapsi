@@ -188,3 +188,30 @@ h1, h2, h3, h4 {
   white-space: nowrap;
   border: 0;
 }
+
+/* Hoja imprimible (Exportar PDF): oculta en pantalla, visible al imprimir */
+.hoja-impresion {
+  display: none;
+}
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #hoja-impresion,
+  #hoja-impresion * {
+    visibility: visible !important;
+  }
+  #hoja-impresion {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+}

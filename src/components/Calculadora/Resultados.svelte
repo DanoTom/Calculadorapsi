@@ -2,6 +2,7 @@
   import type { Resultado } from '../../lib/tipos';
   import type { Sostenibilidad } from '../../lib/sostenibilidad';
   import { fmtMoneda, fmtPct, fmtNumero } from '../../lib/formato';
+  import { descargarImagen } from '../../lib/exportarImagen';
   import SostenibilidadCard from './Sostenibilidad.svelte';
 
   interface Props {
@@ -12,6 +13,21 @@
     cotizacion: number;
   }
   let { r, sost, simbolo, usarUSD, cotizacion }: Props = $props();
+
+  function exportarPNG() {
+    descargarImagen({
+      netoMensual: fmtMoneda(r.netoMensual, simbolo),
+      netoAnual: fmtMoneda(r.netoAnual, simbolo),
+      horaReal: fmtMoneda(r.ingresoPorHoraReal, simbolo),
+      puntaje: sost.puntaje,
+      titulo: sost.titulo,
+      estado: sost.estado,
+    });
+  }
+
+  function exportarPDF() {
+    if (typeof window !== 'undefined') window.print();
+  }
 
   // Conversión a USD (si está activada y la cotización es válida)
   const aUSD = (v: number) => (cotizacion > 0 ? v / cotizacion : 0);
@@ -140,4 +156,28 @@
       {/if}
     </div>
   {/if}
+
+  <!-- Exportar -->
+  <div class="rounded-2xl border border-crema-200 bg-white p-4">
+    <p class="text-sm font-medium text-tinta-700">Llevate tu resumen</p>
+    <div class="mt-3 grid grid-cols-2 gap-2">
+      <button
+        type="button"
+        onclick={exportarPDF}
+        class="rounded-xl border border-crema-200 bg-crema-50 px-3 py-2.5 text-sm font-semibold text-tinta-800 transition-colors hover:bg-crema-100"
+      >
+        Descargar PDF
+      </button>
+      <button
+        type="button"
+        onclick={exportarPNG}
+        class="rounded-xl border border-crema-200 bg-crema-50 px-3 py-2.5 text-sm font-semibold text-tinta-800 transition-colors hover:bg-crema-100"
+      >
+        Imagen para redes
+      </button>
+    </div>
+    <p class="mt-2 text-[11px] leading-snug text-tinta-400">
+      El PDF se genera con la opción «Guardar como PDF» de tu navegador.
+    </p>
+  </div>
 </div>
