@@ -1,14 +1,17 @@
 <script lang="ts">
   import type { Resultado } from '../../lib/tipos';
-  import { fmtMoneda, fmtPct, fmtNumero, n } from '../../lib/formato';
+  import type { Sostenibilidad } from '../../lib/sostenibilidad';
+  import { fmtMoneda, fmtPct, fmtNumero } from '../../lib/formato';
+  import SostenibilidadCard from './Sostenibilidad.svelte';
 
   interface Props {
     r: Resultado;
+    sost: Sostenibilidad;
     simbolo: string;
     usarUSD: boolean;
     cotizacion: number;
   }
-  let { r, simbolo, usarUSD, cotizacion }: Props = $props();
+  let { r, sost, simbolo, usarUSD, cotizacion }: Props = $props();
 
   // Conversión a USD (si está activada y la cotización es válida)
   const aUSD = (v: number) => (cotizacion > 0 ? v / cotizacion : 0);
@@ -48,6 +51,9 @@
       </p>
     {/if}
   </div>
+
+  <!-- Índice de sostenibilidad (el corazón del producto) -->
+  <SostenibilidadCard {sost} />
 
   <!-- Dos métricas clave -->
   <div class="grid grid-cols-2 gap-3">
@@ -134,12 +140,4 @@
       {/if}
     </div>
   {/if}
-
-  <!-- Próximamente: índice de sostenibilidad (Hito 3) -->
-  <div class="rounded-2xl border border-dashed border-crema-300 bg-crema-50 p-4 text-center">
-    <p class="text-sm font-medium text-tinta-600">Próximamente: tu índice de sostenibilidad</p>
-    <p class="mt-1 text-xs text-tinta-400">
-      Una lectura de si tu ritmo es sano: carga, descanso, márgenes y fragilidad.
-    </p>
-  </div>
 </div>

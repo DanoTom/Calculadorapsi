@@ -8,6 +8,7 @@
   import type { Escenario, TipoSesion } from '../../lib/tipos';
   import { escenarioInicial, presetPorCodigo, PAISES } from '../../lib/presets';
   import { calcular } from '../../lib/calculo';
+  import { calcularSostenibilidad } from '../../lib/sostenibilidad';
   import { traerCotizacionARS } from '../../lib/cotizacion';
   import { n, fmtMoneda } from '../../lib/formato';
   import CampoNumero from './CampoNumero.svelte';
@@ -17,6 +18,7 @@
 
   const preset = $derived(presetPorCodigo(esc.pais));
   const r = $derived(calcular(esc));
+  const sost = $derived(calcularSostenibilidad(esc, r));
   const vacaciones = $derived(Math.max(0, 52 - n(esc.semanasTrabajadas)));
 
   const tipos: { clave: TipoSesion; nombre: string }[] = [
@@ -76,6 +78,19 @@
     >
       {fmtMoneda(r.netoMensual, preset.simbolo)}
     </p>
+  </div>
+  <div class="flex flex-col items-center">
+    <span class="text-[11px] font-medium text-tinta-500">Sostenib.</span>
+    <span class="mt-0.5 flex items-center gap-1.5">
+      <span
+        class="inline-block h-2.5 w-2.5 rounded-full {sost.estado === 'bien'
+          ? 'bg-salvia-500'
+          : sost.estado === 'atencion'
+            ? 'bg-ambar-500'
+            : 'bg-arcilla-500'}"
+      ></span>
+      <span class="font-display text-xl font-semibold text-tinta-900">{sost.puntaje}</span>
+    </span>
   </div>
   <div class="text-right">
     <p class="text-[11px] font-medium text-tinta-500">Por hora real</p>
@@ -252,6 +267,6 @@
 
   <!-- ============ RESULTADOS ============ -->
   <div class="lg:sticky lg:top-20">
-    <Resultados {r} simbolo={preset.simbolo} usarUSD={esc.usarUSD} cotizacion={esc.cotizacionUSD} />
+    <Resultados {r} {sost} simbolo={preset.simbolo} usarUSD={esc.usarUSD} cotizacion={esc.cotizacionUSD} />
   </div>
 </div>
