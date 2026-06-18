@@ -10,9 +10,17 @@
   import { calcular } from '../../lib/calculo';
   import { calcularSostenibilidad } from '../../lib/sostenibilidad';
   import { traerCotizacionARS } from '../../lib/cotizacion';
+  import { leerEscenarioDeURL, linkDeEscenario, actualizarURL } from '../../lib/urlState';
+  import {
+    listarEscenarios,
+    guardarEscenario,
+    eliminarEscenario,
+    type EscenarioGuardado,
+  } from '../../lib/storage';
   import { n, fmtMoneda } from '../../lib/formato';
   import CampoNumero from './CampoNumero.svelte';
   import Resultados from './Resultados.svelte';
+  import Comparar from './Comparar.svelte';
 
   let esc = $state<Escenario>(escenarioInicial('AR'));
 
@@ -29,6 +37,66 @@
 
   let cotizacionInfo = $state('');
   let cargandoCotizacion = $state(false);
+
+  // --- Guardar / compartir / comparar ---
+  let guardados = $state<EscenarioGuardado[]>([]);
+  let mostrarPanel = $state(false);
+  let mostrarGuardar = $state(false);
+  let nombreNuevo = $state('');
+  let seleccionados = $state<string[]>([]);
+  let comparando = $state(false);
+  let linkActual = $state('');
+  let copiado = $state(false);
+
+  function copiarLink() {
+    linkActual = linkDeEscenario(esc);
+    actualizarURL(esc);
+    copiado = false;
+    navigator.clipboard
+      ?.writeText(linkActual)
+      .then(() => {
+        copiado = true;
+        setTimeout(() => (copiado = false), 2500);
+      })
+      .catch(() => {});
+  }
+
+  function confirmarGuardar() {
+    guardados = guardarEscenario(nombreNuevo, esc);
+    nombreNuevo = '';
+    mostrarGuardar = false;
+    mostrarPanel = true;
+  }
+
+  function cargar(item: EscenarioGuardado) {
+    esc = JSON.parse(JSON.stringify(item.esc));
+    actualizarURL(esc);
+    mostrarPanel = false;
+  }
+
+  function borrar(id: string) {
+    guardados = eliminarEscenario(id);
+    seleccionados = seleccionados.filter((s) => s !== id);
+  }
+
+  function alternarSeleccion(id: string) {
+    if (seleccionados.includes(id)) {
+      seleccionados = seleccionados.filter((s) => s !== id);
+    } else if (seleccionados.length < 3) {
+      seleccionados = [...seleccionados, id];
+    }
+  }
+
+  const itemsComparar = $derived(
+    guardados
+      .filter((g) => seleccionados.includes(g.id))
+      .map((g) => ({ nombre: g.nombre, esc: g.esc }))
+  );
+
+  function reiniciar() {
+    esc = escenarioInicial(esc.pais);
+    if (preset.soportaDolarApi) actualizarCotizacion();
+  }
 
   async function actualizarCotizacion() {
     if (!preset.soportaDolarApi) return;
@@ -61,7 +129,11 @@
   }
 
   onMount(() => {
-    if (preset.soportaDolarApi) actualizarCotizacion();
+    const desdeURL = leerEscenarioDeURL();
+    if (desdeURL) esc = desdeURL;
+    guardados = listarEscenarios();
+    // Solo traemos cotización en vivo si no vino fijada en el link
+    if (presetPorCodigo(esc.pais).soportaDolarApi && !desdeURL) actualizarCotizacion();
   });
 </script>
 
@@ -99,6 +171,146 @@
     </p>
   </div>
 </div>
+
+<!-- ============ BARRA DE ACCIONES ============ -->
+<div class="mb-4 flex flex-wrap items-center gap-2">
+  <button
+    type="button"
+    onclick={copiarLink}
+    class="inline-flex items-center gap-1.5 rounded-xl bg-terracota-500 px-4 py-2 text-sm font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-600"
+  >
+    {copiado ? '¡Link copiado!' : 'Copiar link'}
+  </button>
+  <button
+    type="button"
+    onclick={() => {
+      mostrarGuardar = !mostrarGuardar;
+      mostrarPanel = false;
+    }}
+    class="rounded-xl border border-crema-200 bg-crema-50 px-4 py-2 text-sm font-semibold text-tinta-800 transition-colors hover:bg-crema-100"
+  >
+    Guardar escenario
+  </button>
+  <button
+    type="button"
+    onclick={() => {
+      mostrarPanel = !mostrarPanel;
+      mostrarGuardar = false;
+    }}
+    class="rounded-xl border border-crema-200 bg-crema-50 px-4 py-2 text-sm font-semibold text-tinta-800 transition-colors hover:bg-crema-100"
+  >
+    Mis escenarios{guardados.length ? ` (${guardados.length})` : ''}
+  </button>
+  <button
+    type="button"
+    onclick={reiniciar}
+    class="ml-auto rounded-xl px-3 py-2 text-sm font-medium text-tinta-500 transition-colors hover:text-tinta-800"
+  >
+    Reiniciar
+  </button>
+</div>
+
+<!-- Link compartible (cuando el portapapeles no está disponible) -->
+{#if linkActual}
+  <div class="mb-4 flex items-center gap-2 rounded-xl border border-crema-200 bg-crema-50 p-2">
+    <input
+      readonly
+      value={linkActual}
+      onfocus={(e) => e.currentTarget.select()}
+      class="w-full bg-transparent px-2 text-xs text-tinta-600 outline-none"
+      aria-label="Link del escenario"
+    />
+  </div>
+{/if}
+
+<!-- Formulario para guardar -->
+{#if mostrarGuardar}
+  <div class="mb-4 rounded-2xl border border-crema-200 bg-white p-4">
+    <label for="nombre-esc" class="block text-sm font-medium text-tinta-700">
+      Nombre para este escenario
+    </label>
+    <div class="mt-2 flex flex-wrap gap-2">
+      <input
+        id="nombre-esc"
+        bind:value={nombreNuevo}
+        placeholder="Ej.: Mi consultorio 2026"
+        onkeydown={(e) => e.key === 'Enter' && confirmarGuardar()}
+        class="min-w-0 flex-1 rounded-xl border border-crema-200 bg-white px-3.5 py-2.5 text-base outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100"
+      />
+      <button
+        type="button"
+        onclick={confirmarGuardar}
+        class="rounded-xl bg-terracota-500 px-4 py-2.5 text-sm font-semibold text-crema-50 hover:bg-terracota-600"
+      >
+        Guardar
+      </button>
+    </div>
+  </div>
+{/if}
+
+<!-- Panel "Mis escenarios" -->
+{#if mostrarPanel}
+  <div class="mb-4 rounded-2xl border border-crema-200 bg-white p-4">
+    {#if guardados.length === 0}
+      <p class="text-sm text-tinta-500">
+        Todavía no guardaste escenarios. Cargá tus números y tocá «Guardar escenario».
+      </p>
+    {:else}
+      <div class="flex items-center justify-between gap-2">
+        <p class="text-sm font-medium text-tinta-700">
+          Tus escenarios <span class="text-tinta-400">(marcá hasta 3 para comparar)</span>
+        </p>
+        <button
+          type="button"
+          disabled={seleccionados.length < 2}
+          onclick={() => (comparando = true)}
+          class="rounded-xl bg-terracota-500 px-3.5 py-1.5 text-sm font-semibold text-crema-50 hover:bg-terracota-600 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Comparar{seleccionados.length ? ` (${seleccionados.length})` : ''}
+        </button>
+      </div>
+      <ul class="mt-3 divide-y divide-crema-100">
+        {#each guardados as g}
+          <li class="flex items-center gap-3 py-2.5">
+            <input
+              type="checkbox"
+              checked={seleccionados.includes(g.id)}
+              onchange={() => alternarSeleccion(g.id)}
+              disabled={!seleccionados.includes(g.id) && seleccionados.length >= 3}
+              class="h-5 w-5 rounded border-crema-300 text-terracota-500 focus:ring-terracota-200"
+              aria-label={`Comparar ${g.nombre}`}
+            />
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium text-tinta-800">{g.nombre}</p>
+              <p class="text-xs text-tinta-400">
+                {new Date(g.fecha).toLocaleDateString('es-AR')}
+              </p>
+            </div>
+            <button
+              type="button"
+              onclick={() => cargar(g)}
+              class="rounded-lg border border-crema-200 px-3 py-1.5 text-xs font-semibold text-tinta-700 hover:bg-crema-100"
+            >
+              Cargar
+            </button>
+            <button
+              type="button"
+              onclick={() => borrar(g.id)}
+              class="rounded-lg px-2 py-1.5 text-xs font-medium text-tinta-400 hover:text-arcilla-500"
+              aria-label={`Borrar ${g.nombre}`}
+            >
+              Borrar
+            </button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
+  </div>
+{/if}
+
+{#if comparando}
+  <Comparar items={itemsComparar} onCerrar={() => (comparando = false)} />
+{/if}
 
 <div class="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
   <!-- ============ INPUTS ============ -->
