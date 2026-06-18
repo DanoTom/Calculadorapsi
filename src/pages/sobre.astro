@@ -1,11 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import ContactoEmail from '../components/ui/ContactoEmail.astro';
+import { SITE } from '../../site.config';
 import { T } from '../lib/strings';
 ---
 
 <Base
   title="Sobre el proyecto"
-  description="Por qué existe CalculadoraPsi: una herramienta hecha para que los psicólogos entiendan y cuiden la sostenibilidad de su práctica."
+  description="Quién está detrás de CalculadoraPsi y por qué existe: una herramienta gratuita para que los psicólogos entiendan y cuiden la sostenibilidad de su práctica."
 >
   <article class="contenedor py-12">
     <header class="mx-auto max-w-2xl">
@@ -14,22 +16,28 @@ import { T } from '../lib/strings';
     </header>
 
     <div class="prosa mt-8">
-      <!-- Texto de base: personalizalo con tu voz y tu historia. -->
       <p>
-        {T.marca.nombre} nació de una pregunta simple que muchos colegas se hacen en voz
-        baja: <em>¿mi forma de trabajar es sostenible para mí?</em> No solo cuánto facturo,
-        sino si el ritmo que llevo me deja vivir bien.
+        Soy psicólogo y escritor argentino, y me apasiona explorar y poner en palabras la
+        complejidad de la experiencia humana. Esa misma curiosidad me llevó, ya en los comienzos
+        de mi práctica, a crear herramientas para los desafíos que la formación clínica casi no
+        aborda.
       </p>
 
-      <h2>Qué hace</h2>
       <p>
-        Es una calculadora gratuita que traduce tu práctica clínica en números claros:
-        tu ingreso neto real, lo que ganás por hora de verdad (contando la administración y
-        los huecos) y un índice de sostenibilidad que mira tu carga, tu descanso y tus
-        márgenes con mirada de colega, no de planilla.
+        Una de ellas es una agenda y planificador profesional que, desde hace tres años, usan
+        colegas en distintos países. {SITE.name} es la continuación de esa idea: poner a
+        disposición, gratis, algo que a mí me habría servido tener al empezar.
       </p>
 
-      <h2>En qué creemos</h2>
+      <h2>Por qué esta calculadora</h2>
+      <p>
+        Poner precio al trabajo, planificar la agenda y sostener una práctica en el tiempo son
+        desafíos reales, y casi nunca se hablan. Esta herramienta traduce tu trabajo clínico en
+        números claros —tu ingreso real por hora, qué tan sostenible es tu ritmo— para que las
+        decisiones se tomen con información y no solo con la sensación.
+      </p>
+
+      <h2>En qué creo</h2>
       <ul>
         <li>Que la información clara reduce la ansiedad y mejora las decisiones.</li>
         <li>Que cuidar tus ingresos es parte de cuidar tu trabajo clínico.</li>
@@ -38,13 +46,14 @@ import { T } from '../lib/strings';
 
       <h2>Lo que no es</h2>
       <p>
-        No es asesoramiento contable ni financiero. Es una estimación orientativa para
-        pensar mejor. Para tu situación particular, siempre conviene hablar con un
-        profesional.
+        No es asesoramiento contable ni financiero. Es una estimación orientativa para pensar
+        mejor. Para tu situación particular, siempre conviene consultar a un profesional.
       </p>
 
       <p>
         <a href="/#calculadora">Probá la calculadora →</a>
+        <br />
+        ¿Tenés una idea o un comentario? <ContactoEmail label="Escribime" />.
       </p>
     </div>
   </article>

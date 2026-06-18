@@ -1,0 +1,33 @@
+---
+/**
+ * Enlace de contacto por correo. Para que se vea prolijo y para evitar el spam
+ * de bots, la dirección NO se escribe en el HTML: se arma con JavaScript al
+ * cargar la página. Si no hay JS, el enlace lleva a la página de contacto.
+ */
+import { SITE } from '../../../site.config';
+
+interface Props {
+  label?: string;
+  class?: string;
+}
+const { label = 'Escribinos por correo', class: clase = '' } = Astro.props;
+
+const [usuario, dominio] = (SITE.social.email || '@').split('@');
+---
+
+<a
+  class:list={['contacto-mail', clase]}
+  href="/privacidad"
+  data-u={usuario}
+  data-d={dominio}
+>
+  {label}
+</a>
+
+<script is:inline>
+  document.querySelectorAll('a.contacto-mail').forEach((a) => {
+    const u = a.getAttribute('data-u');
+    const d = a.getAttribute('data-d');
+    if (u && d) a.setAttribute('href', 'mailto:' + u + '@' + d);
+  });
+</script>

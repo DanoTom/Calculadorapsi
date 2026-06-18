@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../../site.config';
+import ContactoEmail from '../components/ui/ContactoEmail.astro';
 
 const actualizado = '18 de junio de 2026';
 ---
@@ -77,8 +78,7 @@ const actualizado = '18 de junio de 2026';
 
       <h2>Contacto</h2>
       <p>
-        Si tenés dudas sobre privacidad, escribinos
-        {SITE.social.email ? <>a <a href={`mailto:${SITE.social.email}`}>{SITE.social.email}</a></> : 'desde la sección de contacto'}.
+        Si tenés dudas sobre privacidad, <ContactoEmail label="escribinos por correo" />.
       </p>
 
       <p class="text-sm text-tinta-500">
