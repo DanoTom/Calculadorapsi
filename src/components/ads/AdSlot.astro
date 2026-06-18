@@ -1,52 +1,51 @@
 ---
 /**
  * Espacio para un anuncio de Google AdSense.
- * - Mientras ads.enabled = false (en site.config.ts), NO carga nada,
- *   pero igual reserva el espacio para evitar saltos de layout (CLS).
- * - Cuando actives AdSense, mostrará el anuncio real en el mismo lugar.
+ * - Con ads.enabled = true: muestra el anuncio real (reserva el alto para
+ *   evitar saltos de layout / CLS).
+ * - Con ads.enabled = false: en producción NO muestra nada (ni un cartel),
+ *   así el visitante ve un sitio limpio. En desarrollo se ve una marca tenue.
  */
 import { SITE } from '../../../site.config';
 
 interface Props {
-  /** Identificador del bloque de anuncio (data-ad-slot de AdSense) */
   slot?: string;
-  /** Alto mínimo reservado, para que el layout no salte */
   minHeight?: string;
   class?: string;
 }
 
 const { slot = '', minHeight = '90px', class: clase = '' } = Astro.props;
 const activo = SITE.ads.enabled && Boolean(SITE.ads.client);
+const dev = import.meta.env.DEV;
 ---
 
-<aside
-  class:list={['ad-slot mx-auto w-full max-w-3xl', clase]}
-  style={`min-height:${minHeight}`}
-  aria-label="Publicidad"
->
-  {
-    activo ? (
-      <Fragment>
-        <ins
-          class="adsbygoogle block"
-          style={`display:block;min-height:${minHeight}`}
-          data-ad-client={SITE.ads.client}
-          data-ad-slot={slot}
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-        <script is:inline>
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </Fragment>
-    ) : (
+{
+  activo ? (
+    <aside
+      class:list={['mx-auto w-full max-w-3xl', clase]}
+      style={`min-height:${minHeight}`}
+      aria-label="Publicidad"
+    >
+      <ins
+        class="adsbygoogle block"
+        style={`display:block;min-height:${minHeight}`}
+        data-ad-client={SITE.ads.client}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script is:inline>
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </aside>
+  ) : dev ? (
+    <aside class:list={['mx-auto w-full max-w-3xl', clase]} aria-hidden="true">
       <div
-        class="flex h-full w-full items-center justify-center rounded-xl border border-dashed border-crema-300 text-xs text-tinta-400 select-none"
+        class="flex items-center justify-center rounded-xl border border-dashed border-crema-300 text-xs text-tinta-500 select-none"
         style={`min-height:${minHeight}`}
-        aria-hidden="true"
       >
-        Espacio publicitario
+        Espacio publicitario (oculto en producción)
       </div>
-    )
-  }
-</aside>
+    </aside>
+  ) : null
+}

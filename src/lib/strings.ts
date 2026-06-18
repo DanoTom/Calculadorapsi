@@ -60,17 +60,10 @@ export const T = {
         texto: 'Tu ingreso real, por hora y al año, con un índice de sostenibilidad que te cuida.',
       },
       {
-        titulo: 'Guardá y compartí',
-        texto: 'Probá escenarios, guardalos, compará y exportá un resumen prolijo o una imagen para compartir.',
+        titulo: 'Guardá y compará',
+        texto: 'Probá distintos escenarios, guardalos, comparalos lado a lado y llevate un PDF o una imagen con tus números.',
       },
     ],
-  },
-
-  calculadora: {
-    placeholderTitulo: 'Tu calculadora está casi lista',
-    placeholderTexto:
-      'Estamos puliendo cada detalle para que cargar tus números sea simple y los resultados, claros. Muy pronto vas a poder usarla acá mismo.',
-    placeholderBadge: 'En construcción',
   },
 
   guias: {

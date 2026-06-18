@@ -53,7 +53,7 @@
       </svg>
       <div class="absolute inset-0 flex flex-col items-center justify-center">
         <span class="font-display text-2xl font-semibold text-tinta-900">{sost.puntaje}</span>
-        <span class="text-[10px] font-medium text-tinta-400">de 100</span>
+        <span class="text-[10px] font-medium text-tinta-500">de 100</span>
       </div>
     </div>
 
@@ -76,7 +76,7 @@
     {/each}
   </ul>
 
-  <p class="mt-4 text-[11px] leading-relaxed text-tinta-400">
+  <p class="mt-4 text-[11px] leading-relaxed text-tinta-600">
     Es una lectura orientativa para acompañar tus decisiones, no un diagnóstico. Vos conocés tu
     contexto mejor que cualquier número.
   </p>

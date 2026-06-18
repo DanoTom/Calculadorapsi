@@ -55,7 +55,7 @@ const schema = {
       <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <a
           href="#calculadora"
-          class="w-full rounded-2xl bg-terracota-500 px-7 py-3.5 text-base font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-600 sm:w-auto"
+          class="w-full rounded-2xl bg-terracota-600 px-7 py-3.5 text-base font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-700 sm:w-auto"
         >
           {T.hero.cta}
         </a>
@@ -92,7 +92,7 @@ const schema = {
       {
         T.valor.items.map((item, i) => (
           <div class="rounded-3xl border border-crema-200 bg-white p-6 shadow-suave">
-            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-crema-100 font-display text-lg font-semibold text-terracota-500">
+            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-crema-100 font-display text-lg font-semibold text-terracota-600">
               {i + 1}
             </div>
             <h3 class="mt-4 text-xl font-semibold">{item.titulo}</h3>
@@ -159,7 +159,7 @@ const schema = {
               <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-tinta-600">
                 {g.data.description}
               </p>
-              <span class="mt-4 text-sm font-semibold text-terracota-500">{T.guias.leerMas} →</span>
+              <span class="mt-4 text-sm font-semibold text-terracota-600">{T.guias.leerMas} →</span>
             </a>
           ))}
         </div>

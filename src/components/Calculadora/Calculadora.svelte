@@ -178,7 +178,7 @@
   <button
     type="button"
     onclick={copiarLink}
-    class="inline-flex items-center gap-1.5 rounded-xl bg-terracota-500 px-4 py-2 text-sm font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-600"
+    class="inline-flex items-center gap-1.5 rounded-xl bg-terracota-600 px-4 py-2 text-sm font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-700"
   >
     {copiado ? '¡Link copiado!' : 'Copiar link'}
   </button>
@@ -211,16 +211,21 @@
   </button>
 </div>
 
-<!-- Link compartible (cuando el portapapeles no está disponible) -->
+<!-- Link compartible -->
 {#if linkActual}
-  <div class="mb-4 flex items-center gap-2 rounded-xl border border-crema-200 bg-crema-50 p-2">
-    <input
-      readonly
-      value={linkActual}
-      onfocus={(e) => e.currentTarget.select()}
-      class="w-full bg-transparent px-2 text-xs text-tinta-600 outline-none"
-      aria-label="Link del escenario"
-    />
+  <div class="mb-4 rounded-xl border border-crema-200 bg-crema-50 p-2">
+    <div class="flex items-center gap-2">
+      <input
+        readonly
+        value={linkActual}
+        onfocus={(e) => e.currentTarget.select()}
+        class="w-full bg-transparent px-2 text-xs text-tinta-600 outline-none"
+        aria-label="Link del escenario"
+      />
+    </div>
+    <p class="mt-1.5 px-2 text-[11px] leading-snug text-tinta-500">
+      El link lleva tus números adentro: compartilo solo con quien quieras.
+    </p>
   </div>
 {/if}
 
@@ -241,7 +246,7 @@
       <button
         type="button"
         onclick={confirmarGuardar}
-        class="rounded-xl bg-terracota-500 px-4 py-2.5 text-sm font-semibold text-crema-50 hover:bg-terracota-600"
+        class="rounded-xl bg-terracota-600 px-4 py-2.5 text-sm font-semibold text-crema-50 hover:bg-terracota-700"
       >
         Guardar
       </button>
@@ -259,13 +264,13 @@
     {:else}
       <div class="flex items-center justify-between gap-2">
         <p class="text-sm font-medium text-tinta-700">
-          Tus escenarios <span class="text-tinta-400">(marcá hasta 3 para comparar)</span>
+          Tus escenarios <span class="text-tinta-500">(marcá hasta 3 para comparar)</span>
         </p>
         <button
           type="button"
           disabled={seleccionados.length < 2}
           onclick={() => (comparando = true)}
-          class="rounded-xl bg-terracota-500 px-3.5 py-1.5 text-sm font-semibold text-crema-50 hover:bg-terracota-600 disabled:cursor-not-allowed disabled:opacity-40"
+          class="rounded-xl bg-terracota-600 px-3.5 py-1.5 text-sm font-semibold text-crema-50 hover:bg-terracota-700 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Comparar{seleccionados.length ? ` (${seleccionados.length})` : ''}
         </button>
@@ -283,7 +288,7 @@
             />
             <div class="min-w-0 flex-1">
               <p class="truncate text-sm font-medium text-tinta-800">{g.nombre}</p>
-              <p class="text-xs text-tinta-400">
+              <p class="text-xs text-tinta-500">
                 {new Date(g.fecha).toLocaleDateString('es-AR')}
               </p>
             </div>
@@ -297,7 +302,7 @@
             <button
               type="button"
               onclick={() => borrar(g.id)}
-              class="rounded-lg px-2 py-1.5 text-xs font-medium text-tinta-400 hover:text-arcilla-500"
+              class="rounded-lg px-2 py-1.5 text-xs font-medium text-tinta-500 hover:text-arcilla-500"
               aria-label={`Borrar ${g.nombre}`}
             >
               Borrar
@@ -367,7 +372,7 @@
         </div>
       {/if}
 
-      <p class="mt-3 text-xs leading-relaxed text-tinta-400">{preset.nota}</p>
+      <p class="mt-3 text-xs leading-relaxed text-tinta-600">{preset.nota}</p>
     </section>
 
     <!-- Esquema de trabajo -->

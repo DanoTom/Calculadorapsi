@@ -144,9 +144,9 @@ export async function descargarImagen(d: DatosImagen): Promise<void> {
 
   // Pie
   ctx.fillStyle = C.terracota;
-  ctx.font = '600 34px "Inter Variable", sans-serif';
+  ctx.font = '600 32px "Inter Variable", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Calculá la tuya gratis en calculadorapsi.com', W / 2, H - 70);
+  ctx.fillText('calculadorapsi.com', W / 2, H - 70);
 
   // Descargar
   canvas.toBlob((blob) => {

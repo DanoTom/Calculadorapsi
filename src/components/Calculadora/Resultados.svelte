@@ -52,7 +52,7 @@
     </p>
     <p class="text-sm text-tinta-500">por mes (promedio del año)</p>
     {#if usarUSD}
-      <p class="mt-0.5 text-sm font-medium text-tinta-400">≈ {fmtUSD(r.netoMensual)} / mes</p>
+      <p class="mt-0.5 text-sm font-medium text-tinta-500">≈ {fmtUSD(r.netoMensual)} / mes</p>
     {/if}
 
     <div class="mt-3 flex items-baseline justify-between border-t border-crema-100 pt-3">
@@ -78,7 +78,7 @@
       <p class="mt-1 font-display text-xl font-semibold text-terracota-500">
         {fmtMoneda(r.ingresoPorHoraReal, simbolo)}
       </p>
-      <p class="mt-0.5 text-[11px] leading-tight text-tinta-400">
+      <p class="mt-0.5 text-[11px] leading-tight text-tinta-500">
         sobre {fmtNumero(r.horasTotalesSemana)} h/sem dedicadas
       </p>
     </div>
@@ -87,7 +87,7 @@
       <p class="mt-1 font-display text-xl font-semibold text-tinta-900">
         {fmtPct(r.margenNetoPct)}
       </p>
-      <p class="mt-0.5 text-[11px] leading-tight text-tinta-400">de lo que facturás te queda</p>
+      <p class="mt-0.5 text-[11px] leading-tight text-tinta-500">de lo que facturás te queda</p>
     </div>
   </div>
 
@@ -160,6 +160,10 @@
   <!-- Exportar -->
   <div class="rounded-2xl border border-crema-200 bg-white p-4">
     <p class="text-sm font-medium text-tinta-700">Llevate tu resumen</p>
+    <p class="mt-1 text-xs leading-snug text-tinta-500">
+      Para guardarlo o mostrárselo a tu contador. Incluye tus números: compartilo solo con quien
+      quieras.
+    </p>
     <div class="mt-3 grid grid-cols-2 gap-2">
       <button
         type="button"
@@ -173,10 +177,10 @@
         onclick={exportarPNG}
         class="rounded-xl border border-crema-200 bg-crema-50 px-3 py-2.5 text-sm font-semibold text-tinta-800 transition-colors hover:bg-crema-100"
       >
-        Imagen para redes
+        Descargar imagen
       </button>
     </div>
-    <p class="mt-2 text-[11px] leading-snug text-tinta-400">
+    <p class="mt-2 text-[11px] leading-snug text-tinta-500">
       El PDF se genera con la opción «Guardar como PDF» de tu navegador.
     </p>
   </div>

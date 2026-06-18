@@ -40,7 +40,7 @@
     class="mt-1.5 flex items-center rounded-xl border border-crema-200 bg-white transition-colors focus-within:border-terracota-300 focus-within:ring-2 focus-within:ring-terracota-100"
   >
     {#if prefijo}
-      <span class="pl-3.5 text-sm text-tinta-400 select-none">{prefijo}</span>
+      <span class="pl-3.5 text-sm text-tinta-500 select-none">{prefijo}</span>
     {/if}
     <input
       id={campoId}
@@ -56,10 +56,10 @@
       class="w-full bg-transparent px-3.5 py-2.5 text-base text-tinta-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
     />
     {#if sufijo}
-      <span class="pr-3.5 text-sm text-tinta-400 select-none">{sufijo}</span>
+      <span class="pr-3.5 text-sm text-tinta-500 select-none">{sufijo}</span>
     {/if}
   </div>
   {#if ayuda}
-    <p id={ayudaId} class="mt-1 text-xs leading-snug text-tinta-400">{ayuda}</p>
+    <p id={ayudaId} class="mt-1 text-xs leading-snug text-tinta-600">{ayuda}</p>
   {/if}
 </div>
