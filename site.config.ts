@@ -36,7 +36,7 @@ export const SITE = {
   /** Redes / contacto (opcional, se usan en footer y datos estructurados) */
   social: {
     instagram: '',
-    email: 'westartmind@gmail.com',
+    email: 'contacto@calculadorapsi.com',
   },
 } as const;
 
