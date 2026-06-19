@@ -103,8 +103,8 @@ const schema = {
       <div class="mb-6 text-center">
         <h2 class="text-3xl font-semibold sm:text-4xl">Tu calculadora</h2>
         <p class="mx-auto mt-2 max-w-xl text-tinta-600">
-          Cargá tus números y mirá los resultados al instante. Arranca con un ejemplo: cambialo por
-          lo tuyo.
+          Tomate dos minutos. No hay respuestas correctas: solo tu realidad en números. Arrancá con
+          el ejemplo y cambialo por lo tuyo.
         </p>
       </div>
       <Calculadora client:visible />
@@ -192,6 +192,29 @@ const schema = {
       </section>
     )
   }
+
+  <!-- CIERRE HUMANO -->
+  <section class="contenedor mt-20 max-w-2xl">
+    <div class="rounded-3xl border border-crema-200 bg-white p-8 text-center shadow-suave sm:p-10">
+      <span
+        class="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-terracota-50 font-display text-2xl font-semibold text-terracota-600"
+        aria-hidden="true"
+      >
+        ψ
+      </span>
+      <h2 class="mt-4 text-2xl font-semibold sm:text-3xl">Hecho por un colega, para colegas</h2>
+      <p class="mx-auto mt-3 max-w-md leading-relaxed text-tinta-600">
+        CalculadoraPsi nació de la propia práctica: de esas preguntas sobre el dinero y la
+        sostenibilidad que nadie nos enseñó a responder. Es gratis y siempre privada.
+      </p>
+      <a
+        href="/sobre"
+        class="mt-5 inline-block rounded-xl border border-crema-200 bg-crema-50 px-5 py-2.5 text-sm font-semibold text-tinta-800 transition-colors hover:bg-crema-100"
+      >
+        Conocé el proyecto
+      </a>
+    </div>
+  </section>
 
   <!-- DISCLAIMER -->
   <section class="contenedor mt-16 max-w-3xl">

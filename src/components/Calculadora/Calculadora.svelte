@@ -297,8 +297,9 @@
 {#if mostrarPanel}
   <div class="mb-4 rounded-2xl border border-crema-200 bg-white p-4">
     {#if guardados.length === 0}
-      <p class="text-sm text-tinta-500">
-        Todavía no guardaste escenarios. Cargá tus números y tocá «Guardar escenario».
+      <p class="text-sm leading-relaxed text-tinta-600">
+        Acá van a aparecer los escenarios que guardes. Probá distintos honorarios, agendas o
+        descansos, guardalos con un nombre y comparalos cuando quieras. Nada sale de tu dispositivo.
       </p>
     {:else}
       <div class="flex items-center justify-between gap-2">
