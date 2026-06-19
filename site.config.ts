@@ -21,8 +21,8 @@ export const SITE = {
    * Para activarlo: enabled = true y pegá tu client id (ca-pub-XXXX).
    */
   ads: {
-    enabled: false,
-    client: '',
+    enabled: true,
+    client: 'ca-pub-9232748982913595',
   },
 
   /**
