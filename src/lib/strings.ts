@@ -23,7 +23,11 @@ export const T = {
       'Una calculadora gratuita y privada para psicólogos y terapeutas de Latinoamérica. Descubrí tu ingreso real por hora y si tu forma de trabajar es sostenible para vos.',
     cta: 'Calcular mis ingresos',
     ctaSecundaria: 'Ver cómo funciona',
-    nota: 'Gratis · Sin registro · Tus datos no salen de tu dispositivo',
+    ventajas: [
+      { texto: 'Gratis', fuerte: true },
+      { texto: 'Sin registro', fuerte: false },
+      { texto: 'Privado: tus datos no salen de tu dispositivo', fuerte: false },
+    ],
   },
 
   // Las tres métricas estrella que el producto va a mostrar
