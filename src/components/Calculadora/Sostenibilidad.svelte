@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Sostenibilidad, Estado } from '../../lib/sostenibilidad';
+  import InfoTooltip from './InfoTooltip.svelte';
 
   interface Props {
     sost: Sostenibilidad;
@@ -30,7 +31,12 @@
 </script>
 
 <div class="rounded-3xl border border-crema-200 bg-white p-5 shadow-tarjeta">
-  <p class="text-sm font-medium text-tinta-500">Índice de sostenibilidad</p>
+  <p class="flex items-center gap-1.5 text-sm font-medium text-tinta-500">
+    Índice de sostenibilidad
+    <InfoTooltip
+      texto="Combina cuatro señales: carga de sesiones, margen económico, descanso y diversificación del ingreso. Es una lectura orientativa para acompañar, no un diagnóstico."
+    />
+  </p>
 
   <div class="mt-3 flex items-center gap-4">
     <!-- Medidor -->

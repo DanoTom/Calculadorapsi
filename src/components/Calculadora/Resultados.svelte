@@ -4,6 +4,7 @@
   import { fmtMoneda, fmtPct, fmtNumero } from '../../lib/formato';
   import { descargarImagen } from '../../lib/exportarImagen';
   import SostenibilidadCard from './Sostenibilidad.svelte';
+  import InfoTooltip from './InfoTooltip.svelte';
 
   interface Props {
     r: Resultado;
@@ -44,7 +45,12 @@
 <div class="space-y-4">
   <!-- Ingreso neto destacado -->
   <div class="rounded-3xl border border-crema-200 bg-white p-5 shadow-tarjeta">
-    <p class="text-sm font-medium text-tinta-500">Tu ingreso neto estimado</p>
+    <p class="flex items-center gap-1.5 text-sm font-medium text-tinta-500">
+      Tu ingreso neto estimado
+      <InfoTooltip
+        texto="Lo que te queda después de gastos, impuestos, cancelaciones y vacaciones. No lo que facturás en un mes ideal."
+      />
+    </p>
     <p
       class="mt-1 font-display text-4xl font-semibold {enRojo ? 'text-arcilla-500' : 'text-salvia-600'}"
     >
@@ -74,7 +80,12 @@
   <!-- Dos métricas clave -->
   <div class="grid grid-cols-2 gap-3">
     <div class="rounded-2xl border border-crema-200 bg-white p-4">
-      <p class="text-xs font-medium text-tinta-500">Ingreso por hora real</p>
+      <p class="flex items-center gap-1.5 text-xs font-medium text-tinta-500">
+        Ingreso por hora real
+        <InfoTooltip
+          texto="Tu neto dividido por todas las horas que dedicás: sesiones, administración y huecos. No solo las sesiones que cobrás."
+        />
+      </p>
       <p class="mt-1 font-display text-xl font-semibold text-terracota-500">
         {fmtMoneda(r.ingresoPorHoraReal, simbolo)}
       </p>
@@ -83,7 +94,13 @@
       </p>
     </div>
     <div class="rounded-2xl border border-crema-200 bg-white p-4">
-      <p class="text-xs font-medium text-tinta-500">Margen neto</p>
+      <p class="flex items-center gap-1.5 text-xs font-medium text-tinta-500">
+        Margen neto
+        <InfoTooltip
+          align="right"
+          texto="Qué parte de lo que facturás te queda en el bolsillo después de gastos e impuestos."
+        />
+      </p>
       <p class="mt-1 font-display text-xl font-semibold text-tinta-900">
         {fmtPct(r.margenNetoPct)}
       </p>
