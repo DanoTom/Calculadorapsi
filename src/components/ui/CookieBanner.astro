@@ -15,20 +15,26 @@ const mostrar = SITE.ads.enabled;
     <div
       id="cookie-banner"
       hidden
-      class="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-2xl rounded-2xl border border-crema-200 bg-crema-50 p-4 shadow-tarjeta sm:p-5"
+      class="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-2xl rounded-2xl border border-tinta-800 bg-tinta-900 p-4 shadow-2xl ring-1 ring-black/10 sm:bottom-4 sm:p-5"
       role="dialog"
       aria-label="Aviso de cookies"
     >
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p class="text-sm leading-relaxed text-tinta-700">
-          {T.cookies.texto}{' '}
-          <a href="/privacidad" class="font-medium text-terracota-600 underline">
-            {T.cookies.masInfo}
-          </a>
+        <p class="flex items-start gap-2.5 text-sm leading-relaxed text-crema-100">
+          <span aria-hidden="true" class="mt-0.5 text-base">🍪</span>
+          <span>
+            {T.cookies.texto}{' '}
+            <a
+              href="/privacidad"
+              class="font-medium text-terracota-200 underline underline-offset-2 hover:text-terracota-100"
+            >
+              {T.cookies.masInfo}
+            </a>
+          </span>
         </p>
         <button
           id="cookie-aceptar"
-          class="shrink-0 rounded-xl bg-terracota-600 px-4 py-2 text-sm font-semibold text-crema-50 transition-colors hover:bg-terracota-700"
+          class="shrink-0 rounded-xl bg-terracota-600 px-5 py-2.5 text-sm font-semibold text-crema-50 shadow-sm transition-colors hover:bg-terracota-500"
         >
           {T.cookies.aceptar}
         </button>

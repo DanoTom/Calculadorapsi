@@ -63,15 +63,39 @@
     esc.grupos = esc.grupos.filter((g) => g.id !== id);
   }
 
-  // Gastos: sugerencias rápidas (los anuales se reparten solos en el cálculo)
-  const sugerenciasGasto: { concepto: string; frecuencia: 'mensual' | 'anual' }[] = [
-    { concepto: 'Matrícula / colegio', frecuencia: 'anual' },
-    { concepto: 'Caja / aportes profesionales', frecuencia: 'mensual' },
+  // Gastos: sugerencias rápidas (los anuales se reparten solos en el cálculo).
+  // Las comunes valen para cualquier país; las específicas cambian según el
+  // país elegido (colegios, cajas y aportes tienen otro nombre en cada lado).
+  type SugerenciaGasto = { concepto: string; frecuencia: 'mensual' | 'anual' };
+
+  const sugerenciasComunes: SugerenciaGasto[] = [
     { concepto: 'Materiales y tests', frecuencia: 'anual' },
     { concepto: 'Seguro', frecuencia: 'anual' },
     { concepto: 'Contador / gestoría', frecuencia: 'mensual' },
     { concepto: 'Servicios / limpieza', frecuencia: 'mensual' },
   ];
+
+  const sugerenciasPorPais: Record<string, SugerenciaGasto[]> = {
+    AR: [
+      { concepto: 'Matrícula / colegio', frecuencia: 'anual' },
+      { concepto: 'Caja de previsión', frecuencia: 'mensual' },
+    ],
+    MX: [{ concepto: 'Cédula / colegiación', frecuencia: 'anual' }],
+    CL: [
+      { concepto: 'Colegio de Psicólogos', frecuencia: 'anual' },
+      { concepto: 'Cotización previsional / salud', frecuencia: 'mensual' },
+    ],
+    UY: [{ concepto: 'Caja de Profesionales', frecuencia: 'mensual' }],
+    CO: [
+      { concepto: 'Tarjeta profesional', frecuencia: 'anual' },
+      { concepto: 'Seguridad social (salud / pensión)', frecuencia: 'mensual' },
+    ],
+  };
+
+  const sugerenciasGasto = $derived([
+    ...(sugerenciasPorPais[esc.pais] ?? []),
+    ...sugerenciasComunes,
+  ]);
 
   function agregarGasto(concepto = '', frecuencia: 'mensual' | 'anual' = 'mensual') {
     esc.gastos = [...esc.gastos, { id: nuevoGrupoId(), concepto, monto: 0, frecuencia }];
