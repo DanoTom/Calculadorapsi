@@ -63,6 +63,23 @@
     esc.grupos = esc.grupos.filter((g) => g.id !== id);
   }
 
+  // Gastos: sugerencias rápidas (los anuales se reparten solos en el cálculo)
+  const sugerenciasGasto: { concepto: string; frecuencia: 'mensual' | 'anual' }[] = [
+    { concepto: 'Matrícula / colegio', frecuencia: 'anual' },
+    { concepto: 'Caja / aportes profesionales', frecuencia: 'mensual' },
+    { concepto: 'Materiales y tests', frecuencia: 'anual' },
+    { concepto: 'Seguro', frecuencia: 'anual' },
+    { concepto: 'Contador / gestoría', frecuencia: 'mensual' },
+    { concepto: 'Servicios / limpieza', frecuencia: 'mensual' },
+  ];
+
+  function agregarGasto(concepto = '', frecuencia: 'mensual' | 'anual' = 'mensual') {
+    esc.gastos = [...esc.gastos, { id: nuevoGrupoId(), concepto, monto: 0, frecuencia }];
+  }
+  function eliminarGasto(id: string) {
+    esc.gastos = esc.gastos.filter((g) => g.id !== id);
+  }
+
   // Descanso/vacaciones en opciones rápidas (más natural que "semanas trabajadas")
   const descansoPresets = [
     { label: '2 semanas', semanas: 2 },
@@ -553,14 +570,83 @@
 
     <!-- Gastos -->
     <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
-      <h3 class="text-lg font-semibold">Gastos mensuales</h3>
-      <p class="mt-1 text-sm text-tinta-500">Todo opcional. Dejá en cero lo que no apliques.</p>
-      <div class="mt-4 grid gap-4 sm:grid-cols-2">
-        <CampoNumero id="alquiler" label="Alquiler / coworking" prefijo={preset.simbolo} step={1000} bind:value={esc.gastos.alquiler} />
-        <CampoNumero id="supervision" label="Supervisión" prefijo={preset.simbolo} step={1000} bind:value={esc.gastos.supervision} ayuda="Mensualizada." />
-        <CampoNumero id="formacion" label="Formación continua" prefijo={preset.simbolo} step={1000} bind:value={esc.gastos.formacion} ayuda="Mensualizada." />
-        <CampoNumero id="otros" label="Otros gastos fijos" prefijo={preset.simbolo} step={1000} bind:value={esc.gastos.otros} />
+      <h3 class="text-lg font-semibold">Gastos de tu práctica</h3>
+      <p class="mt-1 text-sm text-tinta-500">
+        Sumá lo que pagás. Lo anual (matrícula, seguro…) se reparte solo entre los meses.
+      </p>
+
+      <div class="mt-4 space-y-3">
+        {#each esc.gastos as gasto (gasto.id)}
+          <div class="rounded-2xl border border-crema-100 bg-crema-50 p-3">
+            <div class="mb-3 flex items-center gap-2">
+              <input
+                bind:value={gasto.concepto}
+                placeholder="Concepto (ej. Alquiler)"
+                aria-label="Concepto del gasto"
+                class="min-w-0 flex-1 rounded-lg border border-crema-200 bg-white px-2.5 py-2 text-sm text-tinta-800 outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100"
+              />
+              <button
+                type="button"
+                onclick={() => eliminarGasto(gasto.id)}
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-tinta-500 hover:bg-crema-100 hover:text-arcilla-500"
+                aria-label="Eliminar gasto"
+              >
+                ✕
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <CampoNumero
+                id={`monto-${gasto.id}`}
+                label="Monto"
+                prefijo={preset.simbolo}
+                step={1000}
+                bind:value={gasto.monto}
+              />
+              <div>
+                <label
+                  for={`frec-gasto-${gasto.id}`}
+                  class="block text-sm font-medium text-tinta-700"
+                >
+                  Frecuencia
+                </label>
+                <select
+                  id={`frec-gasto-${gasto.id}`}
+                  bind:value={gasto.frecuencia}
+                  class="mt-1.5 w-full rounded-xl border border-crema-200 bg-white px-3.5 py-2.5 text-base text-tinta-900 outline-none focus:border-terracota-300 focus:ring-2 focus:ring-terracota-100"
+                >
+                  <option value="mensual">Mensual</option>
+                  <option value="anual">Anual</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        {/each}
       </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        {#each sugerenciasGasto as s}
+          <button
+            type="button"
+            onclick={() => agregarGasto(s.concepto, s.frecuencia)}
+            class="rounded-full border border-crema-200 bg-white px-3 py-1.5 text-xs font-medium text-tinta-700 transition-colors hover:bg-crema-100"
+          >
+            + {s.concepto}
+          </button>
+        {/each}
+      </div>
+
+      <button
+        type="button"
+        onclick={() => agregarGasto()}
+        class="mt-3 w-full rounded-xl border border-dashed border-crema-300 px-4 py-2.5 text-sm font-semibold text-tinta-700 transition-colors hover:bg-crema-100"
+      >
+        + Agregar gasto
+      </button>
+
+      <p class="mt-3 rounded-lg bg-crema-50 px-3 py-2 text-sm text-tinta-600">
+        Total de gastos:
+        <strong class="text-tinta-900">{fmtMoneda(r.gastosMensual, preset.simbolo)}</strong> por mes
+      </p>
     </section>
 
     <!-- Impuestos -->

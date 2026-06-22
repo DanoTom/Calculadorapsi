@@ -42,12 +42,12 @@ export function calcular(esc: Escenario): Resultado {
   const brutoAnual = brutoSemanalFacturado * semanas;
   const brutoMensual = brutoAnual / 12;
 
-  // Gastos (mensuales → anuales)
-  const gastosMensual =
-    Math.max(0, n(esc.gastos.alquiler)) +
-    Math.max(0, n(esc.gastos.supervision)) +
-    Math.max(0, n(esc.gastos.formacion)) +
-    Math.max(0, n(esc.gastos.otros));
+  // Gastos: cada uno con su frecuencia. Lo anual se reparte entre los 12 meses.
+  let gastosMensual = 0;
+  for (const g of Array.isArray(esc.gastos) ? esc.gastos : []) {
+    const monto = Math.max(0, n(g.monto));
+    gastosMensual += g.frecuencia === 'anual' ? monto / 12 : monto;
+  }
   const gastosAnual = gastosMensual * 12;
 
   // Impuestos sobre lo facturado

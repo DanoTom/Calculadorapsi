@@ -1,4 +1,4 @@
-import type { Escenario } from './tipos';
+import type { Escenario, GastoItem } from './tipos';
 
 /**
  * Datos por país. TODO es un valor por defecto editable, no una verdad fija.
@@ -122,10 +122,39 @@ export function escenarioInicial(codigo = 'AR'): Escenario {
     semanasTrabajadas: 48,
     cancelacionesMes: 4,
     horasAdminSemana: 5,
-    gastos: { alquiler: p.alquilerEjemplo, supervision: 0, formacion: 0, otros: 0 },
+    gastos: [
+      { id: 'gasto-1', concepto: 'Alquiler / coworking', monto: p.alquilerEjemplo, frecuencia: 'mensual' },
+      { id: 'gasto-2', concepto: 'Supervisión', monto: 0, frecuencia: 'mensual' },
+      { id: 'gasto-3', concepto: 'Formación', monto: 0, frecuencia: 'mensual' },
+    ],
     impuestoPct: p.impuestoPctSugerido,
     metaNetaMensual: 0,
   };
+}
+
+/**
+ * Normaliza los gastos a la lista nueva. Convierte el formato viejo
+ * (objeto con alquiler/supervision/...) por si hay escenarios guardados o
+ * links previos, para no perder esos datos.
+ */
+export function aListaGastos(g: unknown): GastoItem[] {
+  if (Array.isArray(g)) return g as GastoItem[];
+  if (g && typeof g === 'object') {
+    const o = g as Record<string, number>;
+    const mapa: [string, string][] = [
+      ['alquiler', 'Alquiler / coworking'],
+      ['supervision', 'Supervisión'],
+      ['formacion', 'Formación'],
+      ['otros', 'Otros gastos'],
+    ];
+    return mapa.map(([clave, concepto], i) => ({
+      id: 'gasto-' + (i + 1),
+      concepto,
+      monto: Number(o[clave]) || 0,
+      frecuencia: 'mensual' as const,
+    }));
+  }
+  return [];
 }
 
 /** Genera un id único para un grupo nuevo creado en tiempo de ejecución. */

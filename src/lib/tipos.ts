@@ -20,6 +20,14 @@ export interface GrupoHonorario {
   frecuenciaSemanal: number;
 }
 
+/** Un gasto de la práctica, con su frecuencia (lo anual se reparte solo). */
+export interface GastoItem {
+  id: string;
+  concepto: string;
+  monto: number;
+  frecuencia: 'mensual' | 'anual';
+}
+
 /** Un "escenario" es todo lo que el usuario carga. Se guarda/serializa entero. */
 export interface Escenario {
   /** Versión del modelo de datos (para no romper links viejos a futuro) */
@@ -41,13 +49,8 @@ export interface Escenario {
   /** Horas administrativas no facturables por semana */
   horasAdminSemana: number;
 
-  /** Gastos mensuales (en moneda local) */
-  gastos: {
-    alquiler: number;
-    supervision: number;
-    formacion: number;
-    otros: number;
-  };
+  /** Gastos de la práctica (cada uno con su frecuencia) */
+  gastos: GastoItem[];
 
   /** % de impuestos/retención sobre lo facturado (0–100) */
   impuestoPct: number;

@@ -39,14 +39,7 @@
     v === 1 ? 'semanal' : v === 0.5 ? 'quincenal' : v === 2 ? '2x/sem' : v === 0.25 ? 'mensual' : `${v}/sem`;
   const vacaciones = $derived(Math.max(0, 52 - n(esc.semanasTrabajadas)));
 
-  const gastosLista = $derived(
-    [
-      { label: 'Alquiler / coworking', valor: n(esc.gastos.alquiler) },
-      { label: 'Supervisión', valor: n(esc.gastos.supervision) },
-      { label: 'Formación', valor: n(esc.gastos.formacion) },
-      { label: 'Otros', valor: n(esc.gastos.otros) },
-    ].filter((g) => g.valor > 0)
-  );
+  const gastosLista = $derived((esc.gastos ?? []).filter((g) => n(g.monto) > 0));
 </script>
 
 <div bind:this={el} id="hoja-impresion" class="hoja-impresion">
@@ -128,9 +121,9 @@
         <table style="width:100%; border-collapse:collapse; font-size:12px;">
           <tbody>
           {#each gastosLista as g}
-            <tr><td style="padding:3px 0; color:#6e5f50;">{g.label}</td><td style="padding:3px 0; text-align:right;">{fmtMoneda(g.valor, s)}</td></tr>
+            <tr><td style="padding:3px 0; color:#6e5f50;">{g.concepto}{g.frecuencia === 'anual' ? ' (anual)' : ''}</td><td style="padding:3px 0; text-align:right;">{fmtMoneda(n(g.monto), s)}{g.frecuencia === 'anual' ? '/año' : ''}</td></tr>
           {/each}
-          <tr style="border-top:1px solid #ecdfce;"><td style="padding:5px 0; font-weight:600;">Total gastos</td><td style="padding:5px 0; text-align:right; font-weight:600;">{fmtMoneda(r.gastosMensual, s)}</td></tr>
+          <tr style="border-top:1px solid #ecdfce;"><td style="padding:5px 0; font-weight:600;">Total gastos / mes</td><td style="padding:5px 0; text-align:right; font-weight:600;">{fmtMoneda(r.gastosMensual, s)}</td></tr>
           <tr><td style="padding:3px 0; color:#6e5f50;">Impuestos</td><td style="padding:3px 0; text-align:right;">{fmtMoneda(r.impuestoMensual, s)}</td></tr>
           </tbody>
         </table>

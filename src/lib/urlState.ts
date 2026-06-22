@@ -1,5 +1,5 @@
 import type { Escenario } from './tipos';
-import { escenarioInicial } from './presets';
+import { escenarioInicial, aListaGastos } from './presets';
 
 /**
  * Serializa un escenario completo dentro de la URL (para compartir por link) y
@@ -36,7 +36,7 @@ export function deserializarEscenario(s: string): Escenario | null {
       ...base,
       ...data,
       grupos: Array.isArray(data.grupos) && data.grupos.length > 0 ? data.grupos : base.grupos,
-      gastos: { ...base.gastos, ...(data.gastos ?? {}) },
+      gastos: aListaGastos(data.gastos ?? base.gastos),
       version: base.version,
     } as Escenario;
   } catch {

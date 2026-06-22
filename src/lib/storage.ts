@@ -1,4 +1,5 @@
 import type { Escenario } from './tipos';
+import { aListaGastos } from './presets';
 
 /**
  * Guardado de escenarios en el navegador (localStorage). Privado: nada sale
@@ -23,7 +24,12 @@ export function listarEscenarios(): EscenarioGuardado[] {
   try {
     const raw = localStorage.getItem(KEY);
     const arr = raw ? JSON.parse(raw) : [];
-    return Array.isArray(arr) ? arr : [];
+    if (!Array.isArray(arr)) return [];
+    // Normaliza gastos de escenarios viejos (objeto) a la lista nueva
+    return arr.map((item: EscenarioGuardado) => ({
+      ...item,
+      esc: { ...item.esc, gastos: aListaGastos(item.esc?.gastos) },
+    }));
   } catch {
     return [];
   }
