@@ -1,0 +1,6 @@
+# Política de divulgación de seguridad de CalculadoraPsi (RFC 9116)
+# Si encontrás una vulnerabilidad, escribinos antes de divulgarla. Gracias.
+Contact: mailto:danotommasi@gmail.com
+Expires: 2027-06-23T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://calculadorapsi.com/.well-known/security.txt
