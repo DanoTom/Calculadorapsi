@@ -30,6 +30,19 @@ const guias = defineCollection({
     draft: z.boolean().default(false),
     /** Orden en el listado (menor = primero) */
     orden: z.number().default(100),
+    /**
+     * Preguntas frecuentes (opcional). Si se completa, se muestran al final de
+     * la guía y además se emite el schema FAQPage, que permite que Google
+     * muestre las preguntas desplegables en el resultado de búsqueda.
+     */
+    faq: z
+      .array(
+        z.object({
+          pregunta: z.string(),
+          respuesta: z.string(),
+        })
+      )
+      .optional(),
   }),
 });
 

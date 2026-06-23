@@ -9,6 +9,15 @@ slug: "cuanto-cobra-un-psicologo-en-argentina-2026"
 pais: "Argentina"
 tiempoLectura: 5
 orden: 15
+faq:
+  - pregunta: "¿Cuánto cobra un psicólogo por sesión en Argentina en 2026?"
+    respuesta: "Los honorarios sugeridos por los colegios para una sesión individual van, según la jurisdicción, de unos $25.000 a $40.000 en el segundo trimestre de 2026. En CABA y con más experiencia tienden a ser más altos; por obra social, bastante más bajos."
+  - pregunta: "¿El honorario sugerido es obligatorio?"
+    respuesta: "No. Es una referencia o mínimo ético sugerido por cada colegio. Cada profesional define su propia tarifa."
+  - pregunta: "¿Cuánto pagan las obras sociales y prepagas?"
+    respuesta: "Menos que la atención particular y con demora. Deben cubrir tratamientos por ley, en general dos a cuatro sesiones mensuales con copago o reintegro; conviene consultar la cartilla y las condiciones de cada plan."
+  - pregunta: "¿La terapia online es más barata?"
+    respuesta: "Suele costar lo mismo que la presencial, a veces con una pequeña diferencia a la baja."
 ---
 
 En 2026, los honorarios sugeridos por los colegios profesionales para una sesión de psicoterapia individual se ubican, según la jurisdicción, en un rango aproximado de **$25.000 a $40.000**. Pero ese número dice menos de lo que parece: varía bastante por provincia, experiencia y modalidad, y cambia por completo según se atienda de forma particular o por obra social.
@@ -49,20 +58,6 @@ A eso se suma algo que pasa puertas adentro del consultorio: en la atención par
 Acá está la parte que casi nunca se calcula. El honorario por sesión no es el ingreso. De ese valor hay que descontar los impuestos —el monotributo, por ejemplo—, los gastos del consultorio (alquiler, supervisión, formación), las sesiones que se cancelan, las semanas de vacaciones y todas las horas no facturadas de coordinación y administración. Cuando se hace esa cuenta, el ingreso neto y, sobre todo, el valor de la hora real de trabajo resultan bastante menores que el número del honorario.
 
 Por eso saber "cuánto se cobra" es apenas la mitad de la pregunta. La otra mitad —cuánto te queda y cuánto vale tu hora real— la podés calcular con tus propios números en la [calculadora de este sitio](/#calculadora). Y si lo que ves es que tu valor quedó atrasado, vale la pena leer [cómo actualizar los honorarios](/guias/subir-honorarios) sin perder pacientes.
-
-## Preguntas frecuentes
-
-**¿Cuánto cobra un psicólogo por sesión en Argentina en 2026?**
-Los honorarios sugeridos por los colegios para una sesión individual van, según la jurisdicción, de unos $25.000 a $40.000 en el segundo trimestre de 2026. En CABA y con más experiencia tienden a ser más altos; por obra social, bastante más bajos.
-
-**¿El honorario sugerido es obligatorio?**
-No. Es una referencia o mínimo ético sugerido por cada colegio. Cada profesional define su propia tarifa.
-
-**¿Cuánto pagan las obras sociales y prepagas?**
-Menos que la atención particular y con demora. Deben cubrir tratamientos por ley, en general dos a cuatro sesiones mensuales con copago o reintegro; conviene consultar la cartilla y las condiciones de cada plan.
-
-**¿La terapia online es más barata?**
-Suele costar lo mismo que la presencial, a veces con una pequeña diferencia a la baja.
 
 ---
 
