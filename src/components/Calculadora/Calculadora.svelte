@@ -223,7 +223,15 @@
 
   // El CTA "Ver cómo funciona" del hero (fuera de este componente) también
   // puede iniciar el recorrido: escuchamos clicks en [data-tour-start].
+  // Si el click ocurrió ANTES de que este island se hidrate (típico en móvil,
+  // donde la calculadora arranca fuera de pantalla con client:visible), un
+  // script temprano de la página deja la marca __tourPendiente y la levantamos acá.
   $effect(() => {
+    const w = window as unknown as { __tourPendiente?: boolean };
+    if (w.__tourPendiente) {
+      delete w.__tourPendiente;
+      tourActivo = true;
+    }
     const alClickear = (e: MouseEvent) => {
       const disparador = (e.target as HTMLElement).closest('[data-tour-start]');
       if (disparador) tourActivo = true;
@@ -480,7 +488,9 @@
 
 <div class="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
   <!-- ============ INPUTS ============ -->
-  <div class="space-y-5">
+  <!-- min-w-0: los ítems de grilla no se achican por debajo de su contenido
+       (min-width:auto); sin esto la página desborda en pantallas angostas -->
+  <div class="min-w-0 space-y-5">
     <!-- País y moneda -->
     <section data-tour="pais" class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">País y moneda</h3>
@@ -790,7 +800,7 @@
   </div>
 
   <!-- ============ RESULTADOS ============ -->
-  <div data-tour="resultados" class="lg:sticky lg:top-20">
+  <div data-tour="resultados" class="min-w-0 lg:sticky lg:top-20">
     <Resultados {r} {sost} simbolo={preset.simbolo} usarUSD={esc.usarUSD} cotizacion={esc.cotizacionUSD} />
   </div>
 </div>

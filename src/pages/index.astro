@@ -109,6 +109,16 @@ const schema = {
         </p>
       </div>
       <Calculadora client:visible />
+      <script is:inline>
+        // Si tocan "Ver cómo funciona" antes de que la calculadora se hidrate
+        // (client:visible), dejamos la marca para que arranque el recorrido
+        // apenas termine de cargar.
+        document.addEventListener('click', function (e) {
+          if (e.target.closest && e.target.closest('[data-tour-start]')) {
+            window.__tourPendiente = true;
+          }
+        });
+      </script>
     </div>
   </section>
 

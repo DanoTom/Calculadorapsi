@@ -53,7 +53,7 @@
       oninput={onInput}
       onfocus={(e) => e.currentTarget.select()}
       aria-describedby={ayudaId}
-      class="w-full bg-transparent px-3.5 py-2.5 text-base text-tinta-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      class="w-full min-w-0 bg-transparent px-3.5 py-2.5 text-base text-tinta-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
     />
     {#if sufijo}
       <span class="pr-3.5 text-sm text-tinta-500 select-none">{sufijo}</span>

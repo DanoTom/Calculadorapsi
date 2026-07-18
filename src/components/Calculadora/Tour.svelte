@@ -21,12 +21,27 @@
 
   let indice = $state(0);
   let rect = $state<{ top: number; left: number; width: number; height: number } | null>(null);
+  let tarjetaEl: HTMLElement | null = null;
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   function medir() {
     const el = document.querySelector(`[data-tour="${pasos[indice].objetivo}"]`);
     if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Scroll manual en vez de scrollIntoView: hay que centrar la sección en
+    // el área que la tarjeta guía NO tapa (clave en celular, donde la tarjeta
+    // ocupa buena parte de abajo de la pantalla).
+    const r0 = el.getBoundingClientRect();
+    const altoTarjeta = (tarjetaEl?.offsetHeight ?? 210) + 24;
+    const margenSup = 76; // header pegajoso + un poco de aire
+    const areaLibre = window.innerHeight - altoTarjeta - margenSup;
+    const topDoc = r0.top + window.scrollY;
+    const destino =
+      r0.height >= areaLibre
+        ? topDoc - margenSup // sección alta: mostrar desde su inicio
+        : topDoc - margenSup - (areaLibre - r0.height) / 2; // centrar en el área libre
+    window.scrollTo({ top: Math.max(0, destino), behavior: 'smooth' });
+
     // El recuadro vive en coordenadas del documento, así que su posición
     // nueva se puede calcular YA (no depende del scroll): la transición CSS
     // lo hace viajar hasta ahí mientras la página scrollea en paralelo.
@@ -109,6 +124,7 @@
 
   <!-- Tarjeta guía -->
   <div
+    bind:this={tarjetaEl}
     transition:fade={{ duration: 200 }}
     class="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-md rounded-2xl border border-crema-200 bg-white p-4 shadow-2xl sm:bottom-5 sm:p-5"
     role="dialog"
