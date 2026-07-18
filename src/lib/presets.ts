@@ -133,6 +133,40 @@ export function escenarioInicial(codigo = 'AR'): Escenario {
 }
 
 /**
+ * Crea un escenario vacío para cargar valores propios desde cero.
+ * Conserva el país y sus valores estructurales (semanas, % de impuesto
+ * sugerido, cotización), pero sin datos de ejemplo: eso es lo que la gente
+ * espera de "Reiniciar".
+ */
+export function escenarioVacio(codigo = 'AR'): Escenario {
+  const p = presetPorCodigo(codigo);
+  return {
+    version: 2,
+    pais: p.codigo,
+    usarUSD: false,
+    cotizacionUSD: p.cotizacionUSDsugerida,
+    grupos: [
+      {
+        id: 'g1',
+        tipo: 'individual',
+        etiqueta: '',
+        cantidad: 0,
+        honorario: 0,
+        frecuenciaSemanal: 1,
+      },
+    ],
+    semanasTrabajadas: 48,
+    cancelacionesMes: 0,
+    horasAdminSemana: 0,
+    gastos: [
+      { id: 'gasto-1', concepto: 'Alquiler / coworking', monto: 0, frecuencia: 'mensual' },
+    ],
+    impuestoPct: p.impuestoPctSugerido,
+    metaNetaMensual: 0,
+  };
+}
+
+/**
  * Normaliza los gastos a la lista nueva. Convierte el formato viejo
  * (objeto con alquiler/supervision/...) por si hay escenarios guardados o
  * links previos, para no perder esos datos.

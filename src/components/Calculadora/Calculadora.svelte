@@ -6,7 +6,7 @@
    */
   import { onMount } from 'svelte';
   import type { Escenario, TipoSesion } from '../../lib/tipos';
-  import { escenarioInicial, presetPorCodigo, PAISES, nuevoGrupoId } from '../../lib/presets';
+  import { escenarioInicial, escenarioVacio, presetPorCodigo, PAISES, nuevoGrupoId } from '../../lib/presets';
   import { calcular } from '../../lib/calculo';
   import { calcularSostenibilidad } from '../../lib/sostenibilidad';
   import { traerCotizacionARS } from '../../lib/cotizacion';
@@ -173,7 +173,13 @@
       .map((g) => ({ nombre: g.nombre, esc: g.esc }))
   );
 
+  // "Reiniciar" deja los campos en cero para cargar lo propio (lo que la
+  // gente espera del botón); "Cargar ejemplo" vuelve al ejemplo del país.
   function reiniciar() {
+    esc = escenarioVacio(esc.pais);
+  }
+
+  function cargarEjemplo() {
     esc = escenarioInicial(esc.pais);
     if (preset.soportaDolarApi) actualizarCotizacion();
   }
@@ -284,8 +290,15 @@
   </button>
   <button
     type="button"
-    onclick={reiniciar}
+    onclick={cargarEjemplo}
     class="ml-auto rounded-xl px-3 py-2 text-sm font-medium text-tinta-500 transition-colors hover:text-tinta-800"
+  >
+    Cargar ejemplo
+  </button>
+  <button
+    type="button"
+    onclick={reiniciar}
+    class="rounded-xl px-3 py-2 text-sm font-medium text-tinta-500 transition-colors hover:text-tinta-800"
   >
     Reiniciar
   </button>
