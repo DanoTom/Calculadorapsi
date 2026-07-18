@@ -20,6 +20,7 @@
   import { n, fmtMoneda, fmtNumero, fmtPct } from '../../lib/formato';
   import CampoNumero from './CampoNumero.svelte';
   import Resultados from './Resultados.svelte';
+  import Tour from './Tour.svelte';
   import Comparar from './Comparar.svelte';
   import ResumenImprimible from './ResumenImprimible.svelte';
 
@@ -173,6 +174,64 @@
       .map((g) => ({ nombre: g.nombre, esc: g.esc }))
   );
 
+  // Recorrido guiado por las partes de la calculadora
+  let tourActivo = $state(false);
+  const pasosTour = [
+    {
+      objetivo: 'pais',
+      titulo: 'Elegí tu país',
+      texto:
+        'Cada país trae valores sugeridos (honorarios de ejemplo, impuestos, cotización) que después ajustás. Si te sirve, podés razonar todo también en dólares.',
+    },
+    {
+      objetivo: 'esquema',
+      titulo: 'Tu esquema de trabajo',
+      texto:
+        'Cargá tus grupos de pacientes con su honorario y frecuencia, tus semanas de trabajo al año, las cancelaciones típicas de un mes y las horas administrativas. Todo cuenta.',
+    },
+    {
+      objetivo: 'gastos',
+      titulo: 'Los gastos de tu práctica',
+      texto:
+        'Alquiler, supervisión, matrícula… Cada gasto con su frecuencia real: los anuales se reparten solos entre los meses. Las sugerencias cambian según tu país.',
+    },
+    {
+      objetivo: 'impuestos',
+      titulo: 'Impuestos y retenciones',
+      texto:
+        'Un porcentaje sobre lo que facturás, con un valor sugerido por país como punto de partida. Tu contador sabe el tuyo exacto: acá lo podés ajustar.',
+    },
+    {
+      objetivo: 'meta',
+      titulo: 'Tu meta (si querés)',
+      texto:
+        'Poné cuánto querés que te quede por mes y la calculadora te muestra dos caminos para llegar: más sesiones o mejores honorarios.',
+    },
+    {
+      objetivo: 'resultados',
+      titulo: 'Tus números de verdad',
+      texto:
+        'Acá vive el resultado: tu ingreso neto, cuánto vale tu hora real de trabajo y el índice de sostenibilidad que mira tu carga, tu margen y tu descanso.',
+    },
+    {
+      objetivo: 'acciones',
+      titulo: 'Guardá y compará',
+      texto:
+        'Guardá escenarios, comparalos lado a lado, copiá un link con tus números o llevate un PDF. Todo queda en tu dispositivo, nada sale de acá.',
+    },
+  ];
+
+  // El CTA "Ver cómo funciona" del hero (fuera de este componente) también
+  // puede iniciar el recorrido: escuchamos clicks en [data-tour-start].
+  $effect(() => {
+    const alClickear = (e: MouseEvent) => {
+      const disparador = (e.target as HTMLElement).closest('[data-tour-start]');
+      if (disparador) tourActivo = true;
+    };
+    document.addEventListener('click', alClickear);
+    return () => document.removeEventListener('click', alClickear);
+  });
+
   // "Reiniciar" deja los campos en cero para cargar lo propio (lo que la
   // gente espera del botón); "Cargar ejemplo" vuelve al ejemplo del país.
   function reiniciar() {
@@ -260,7 +319,7 @@
 </div>
 
 <!-- ============ BARRA DE ACCIONES ============ -->
-<div class="mb-4 flex flex-wrap items-center gap-2">
+<div data-tour="acciones" class="mb-4 flex flex-wrap items-center gap-2">
   <button
     type="button"
     onclick={copiarLink}
@@ -290,8 +349,15 @@
   </button>
   <button
     type="button"
+    onclick={() => (tourActivo = true)}
+    class="ml-auto rounded-xl px-3 py-2 text-sm font-medium text-terracota-600 transition-colors hover:text-terracota-700"
+  >
+    ✦ Recorrido guiado
+  </button>
+  <button
+    type="button"
     onclick={cargarEjemplo}
-    class="ml-auto rounded-xl px-3 py-2 text-sm font-medium text-tinta-500 transition-colors hover:text-tinta-800"
+    class="rounded-xl px-3 py-2 text-sm font-medium text-tinta-500 transition-colors hover:text-tinta-800"
   >
     Cargar ejemplo
   </button>
@@ -416,7 +482,7 @@
   <!-- ============ INPUTS ============ -->
   <div class="space-y-5">
     <!-- País y moneda -->
-    <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
+    <section data-tour="pais" class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">País y moneda</h3>
       <div class="mt-4 grid gap-4 sm:grid-cols-2">
         <div>
@@ -470,7 +536,7 @@
     </section>
 
     <!-- Esquema de trabajo -->
-    <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
+    <section data-tour="esquema" class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">Tu esquema de trabajo</h3>
       <p class="mt-1 text-sm text-tinta-500">
         Agrupá a tus pacientes por honorario. ¿Cobrás distinto a algunos? Agregá un grupo.
@@ -606,7 +672,7 @@
     </section>
 
     <!-- Gastos -->
-    <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
+    <section data-tour="gastos" class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">Gastos de tu práctica</h3>
       <p class="mt-1 text-sm text-tinta-500">
         Sumá lo que pagás. Lo anual (matrícula, seguro…) se reparte solo entre los meses.
@@ -687,7 +753,7 @@
     </section>
 
     <!-- Impuestos -->
-    <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
+    <section data-tour="impuestos" class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">Impuestos y retenciones</h3>
       <div class="mt-4 max-w-xs">
         <CampoNumero
@@ -705,7 +771,7 @@
     </section>
 
     <!-- Meta -->
-    <section class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
+    <section data-tour="meta" class="rounded-3xl border border-crema-200 bg-white p-5 sm:p-6">
       <h3 class="text-lg font-semibold">Tu meta (opcional)</h3>
       <p class="mt-1 text-sm text-tinta-500">
         Poné cuánto querés ganar neto por mes y te decimos cómo llegar.
@@ -724,10 +790,12 @@
   </div>
 
   <!-- ============ RESULTADOS ============ -->
-  <div class="lg:sticky lg:top-20">
+  <div data-tour="resultados" class="lg:sticky lg:top-20">
     <Resultados {r} {sost} simbolo={preset.simbolo} usarUSD={esc.usarUSD} cotizacion={esc.cotizacionUSD} />
   </div>
 </div>
+
+<Tour pasos={pasosTour} bind:activo={tourActivo} />
 
 <!-- Hoja imprimible (oculta en pantalla; se ve al exportar PDF) -->
 <ResumenImprimible {esc} {r} {sost} {preset} />
