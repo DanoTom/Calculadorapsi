@@ -2,7 +2,7 @@
 title: "Organizar las finanzas del consultorio (sin volverse contador)"
 description: "Conocer los números de la práctica clínica —ingresos, gastos y hora real de trabajo— no es una cuestión contable: es lo que permite decidir mejor y trabajar con más tranquilidad. Por dónde empezar."
 pubDate: "2026-06-18"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["finanzas", "gestión", "consultorio", "práctica clínica"]
 slug: "organizar-finanzas-consultorio"
 tiempoLectura: 3

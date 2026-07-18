@@ -2,7 +2,7 @@
 title: "Síndrome del impostor y honorarios: por qué cuesta poner precio al trabajo clínico"
 description: "Por qué a muchos psicólogos nos cuesta cobrar lo que vale nuestro trabajo: el peso de la formación, el síndrome del impostor y el honorario como parte del encuadre."
 pubDate: "2026-06-18"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["honorarios", "síndrome del impostor", "encuadre", "práctica clínica"]
 slug: "sindrome-del-impostor-y-honorarios"
 tiempoLectura: 4

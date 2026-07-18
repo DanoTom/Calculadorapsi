@@ -3,7 +3,7 @@ title: "¿Cuánto cobra un psicólogo en Argentina en 2026?"
 description: "Cuánto cobra un psicólogo por sesión en Argentina en 2026: honorarios sugeridos por los colegios, la diferencia entre atención particular y obra social, y qué queda realmente del honorario."
 pubDate: "2026-06-22"
 actualizado: "2026-06-23"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["honorarios", "Argentina", "tarifas", "obra social"]
 slug: "cuanto-cobra-un-psicologo-en-argentina-2026"
 pais: "Argentina"

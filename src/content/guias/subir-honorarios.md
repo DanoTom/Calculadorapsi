@@ -2,7 +2,7 @@
 title: "Cómo subir los honorarios sin perder pacientes"
 description: "Actualizar los honorarios es una de las cosas que más cuesta en la práctica clínica. Por qué lo evitamos, por qué no hacerlo también es una decisión, y cómo comunicarlo con claridad."
 pubDate: "2026-06-18"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["honorarios", "actualización", "encuadre", "práctica clínica"]
 slug: "subir-honorarios"
 tiempoLectura: 4

@@ -1,14 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
 import ContactoEmail from '../components/ui/ContactoEmail.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
 import { SITE } from '../../site.config';
 import { T } from '../lib/strings';
+
+// Datos estructurados: quién está detrás del sitio (señal de autoría real)
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.author,
+  jobTitle: 'Psicólogo',
+  url: `${SITE.url}/sobre`,
+  sameAs: [SITE.authorLinkedIn],
+  knowsAbout: ['Psicología clínica', 'Práctica profesional', 'Honorarios profesionales'],
+  mainEntityOfPage: `${SITE.url}/sobre`,
+};
 ---
 
 <Base
-  title="Sobre el proyecto"
-  description="Quién está detrás de CalculadoraPsi y por qué existe: una herramienta gratuita para que los psicólogos entiendan y cuiden la sostenibilidad de su práctica."
+  title="Sobre el proyecto y su autor"
+  description="Quién está detrás de CalculadoraPsi: Daniel Tommasi, psicólogo argentino, y por qué creó esta herramienta gratuita para la sostenibilidad de la práctica clínica."
 >
+  <JsonLd schema={schema} slot="head" />
+
   <article class="contenedor py-12">
     <header class="mx-auto max-w-2xl">
       <h1 class="text-4xl font-semibold">Sobre el proyecto</h1>
@@ -17,16 +32,17 @@ import { T } from '../lib/strings';
 
     <div class="prosa mt-8">
       <p>
-        Soy psicólogo y escritor argentino, y me apasiona explorar y poner en palabras la
-        complejidad de la experiencia humana. Esa misma curiosidad me llevó, ya en los comienzos
-        de mi práctica, a crear herramientas para los desafíos que la formación clínica casi no
-        aborda.
+        Me llamo <strong>{SITE.author}</strong>. Soy psicólogo y escritor argentino, y me
+        apasiona explorar y poner en palabras la complejidad de la experiencia humana. Esa misma
+        curiosidad me llevó, ya en los comienzos de mi práctica, a crear herramientas para los
+        desafíos que la formación clínica casi no aborda. Podés conocer mi recorrido profesional
+        en <a href={SITE.authorLinkedIn} rel="noopener me">LinkedIn</a>.
       </p>
 
       <p>
-        Una de ellas es una agenda y planificador profesional que, desde hace tres años, usan
-        colegas en distintos países. {SITE.name} es la continuación de esa idea: poner a
-        disposición, gratis, algo que a mí me habría servido tener al empezar.
+        Una de esas herramientas es una agenda y planificador profesional que, desde hace tres
+        años, usan colegas en distintos países. {SITE.name} es la continuación de esa idea:
+        poner a disposición, gratis, algo que a mí me habría servido tener al empezar.
       </p>
 
       <h2>Por qué esta calculadora</h2>

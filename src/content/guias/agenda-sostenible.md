@@ -2,7 +2,7 @@
 title: "Cómo planificar una agenda clínica sostenible"
 description: "Una agenda sostenible no es la más llena, sino la que se puede mantener sin agotamiento. Cómo pensar la carga real de trabajo, la palanca de los honorarios y cómo planificar al revés."
 pubDate: "2026-06-18"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["agenda", "sostenibilidad", "burnout", "práctica clínica"]
 slug: "agenda-sostenible"
 tiempoLectura: 4

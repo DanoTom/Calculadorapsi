@@ -14,7 +14,9 @@ export const SITE = {
   /** Idioma principal */
   locale: 'es',
   /** Autor / proyecto, para metadatos */
-  author: 'CalculadoraPsi',
+  author: 'Daniel Tommasi',
+  /** Perfil público del autor (se usa en los datos estructurados y en /sobre) */
+  authorLinkedIn: 'https://ar.linkedin.com/in/daniel-tommasi-psicolog%C3%ADa',
 
   /**
    * Google AdSense. Lo dejamos APAGADO hasta tener la cuenta aprobada.

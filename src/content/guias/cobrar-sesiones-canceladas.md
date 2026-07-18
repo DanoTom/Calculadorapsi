@@ -2,7 +2,7 @@
 title: "Cómo cobrar las sesiones canceladas o las ausencias"
 description: "Política de cancelación en la práctica clínica: por qué conviene cobrar el tiempo reservado, cómo comunicarlo como parte del encuadre y por qué las ausencias también son material de trabajo."
 pubDate: "2026-06-22"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["cancelaciones", "encuadre", "honorarios", "práctica clínica"]
 slug: "cobrar-sesiones-canceladas"
 tiempoLectura: 4

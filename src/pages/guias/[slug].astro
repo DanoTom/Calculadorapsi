@@ -30,7 +30,16 @@ const schema = {
   datePublished: guia.data.pubDate.toISOString(),
   dateModified: fecha.toISOString(),
   inLanguage: 'es',
-  author: { '@type': guia.data.author ? 'Person' : 'Organization', name: guia.data.author ?? SITE.name },
+  author: guia.data.author
+    ? {
+        '@type': 'Person',
+        name: guia.data.author,
+        // Conecta al autor con su página y su perfil público (señal de autoría real)
+        ...(guia.data.author === SITE.author
+          ? { url: `${SITE.url}/sobre`, sameAs: [SITE.authorLinkedIn] }
+          : {}),
+      }
+    : { '@type': 'Organization', name: SITE.name },
   publisher: { '@type': 'Organization', name: SITE.name },
 };
 
@@ -71,7 +80,17 @@ const faqSchema =
       <h1 class="mt-4 text-4xl font-semibold leading-tight">{guia.data.title}</h1>
       <p class="mt-4 text-lg text-tinta-600">{guia.data.description}</p>
       <p class="mt-4 text-sm text-tinta-500">
-        {guia.data.author && <>Por {guia.data.author} · </>}{fechaLegible} · {guia.data.tiempoLectura}
+        {
+          guia.data.author && (
+            <>
+              Por{' '}
+              <a href="/sobre" class="font-medium text-tinta-700 underline underline-offset-2 hover:text-terracota-600">
+                {guia.data.author}
+              </a>{' '}
+              ·{' '}
+            </>
+          )
+        }{fechaLegible} · {guia.data.tiempoLectura}
         {' '}{T.guias.tiempoLectura}
       </p>
     </header>

@@ -2,7 +2,7 @@
 title: "Honorarios diferenciados: cómo cobrar distinto sin que se resienta el trabajo"
 description: "Escala móvil y honorarios diferenciados en la práctica clínica: por qué el problema no es cobrar distinto, sino hacerlo por culpa e improvisando, y cómo sostenerlo sin desgaste."
 pubDate: "2026-06-18"
-author: "Dano"
+author: "Daniel Tommasi"
 tags: ["honorarios", "escala móvil", "encuadre", "práctica clínica"]
 slug: "honorarios-diferenciados"
 tiempoLectura: 5
