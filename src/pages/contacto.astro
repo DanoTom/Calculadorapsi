@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactoEmail from '../components/ui/ContactoEmail.astro';
+import { SITE } from '../../site.config';
+---
+
+<Base
+  title="Contacto"
+  description="Escribinos: comentarios sobre la calculadora, errores, ideas de guías o ganas de contarnos cómo la usás. Leemos todo."
+>
+  <article class="contenedor py-12">
+    <header class="mx-auto max-w-2xl">
+      <h1 class="text-4xl font-semibold">Contacto</h1>
+      <p class="mt-3 text-lg text-tinta-600">
+        {SITE.name} lo hace una persona, no una empresa con mesa de ayuda. Pero justamente por
+        eso, los mensajes se leen todos.
+      </p>
+    </header>
+
+    <div class="prosa mt-8">
+      <h2>Para qué escribirnos</h2>
+      <ul>
+        <li>
+          <strong>Encontraste un error</strong> — un número que no cierra, algo que se ve mal en
+          tu teléfono, un texto confuso. Es el mensaje más valioso que podés mandar.
+        </li>
+        <li>
+          <strong>Un criterio te parece discutible</strong> — la <a href="/metodologia">
+          metodología</a> está publicada a propósito: si algo te parece mal calculado, queremos
+          discutirlo.
+        </li>
+        <li>
+          <strong>Querés proponer una guía</strong> — si hay un tema de honorarios, gastos o
+          sostenibilidad de la práctica que te gustaría leer, contanos.
+        </li>
+        <li>
+          <strong>Los valores de tu país quedaron viejos</strong> — los honorarios de referencia
+          cambian; si conocés los vigentes en tu colegio o región, ese dato ayuda a todos.
+        </li>
+        <li>
+          <strong>Simplemente te sirvió</strong> — también se puede escribir para eso. Alegra el
+          día y ayuda a decidir qué construir después.
+        </li>
+      </ul>
+
+      <h2>Cómo escribirnos</h2>
+      <p>
+        Por correo: <ContactoEmail label={SITE.social.email.replace('@', ' [arroba] ')} />.
+        Respondemos en unos días; a veces antes, a veces después, porque del otro lado hay
+        consultorio también.
+      </p>
+
+      <h2>Lo que no hacemos por este medio</h2>
+      <p>
+        No damos asesoramiento contable, fiscal ni financiero personalizado — para eso siempre
+        va a ser mejor tu contador, que conoce tu situación. Y no pedimos nunca datos de tus
+        pacientes ni de tu facturación: como contamos en la
+        <a href="/privacidad">política de privacidad</a>, tus números no nos interesan ni los
+        vemos.
+      </p>
+    </div>
+  </article>
+</Base>

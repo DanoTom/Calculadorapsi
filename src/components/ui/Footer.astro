@@ -3,7 +3,6 @@
  * Pie de página: descripción, navegación secundaria, legales y disclaimer.
  */
 import Logo from './Logo.astro';
-import ContactoEmail from './ContactoEmail.astro';
 import { T } from '../../lib/strings';
 
 const anio = new Date().getFullYear();
@@ -11,9 +10,14 @@ const anio = new Date().getFullYear();
 const secciones = [
   { href: '/#calculadora', texto: T.nav.calculadora },
   { href: '/guias', texto: T.nav.guias },
+  { href: '/metodologia', texto: 'Cómo calcula' },
   { href: '/sobre', texto: T.nav.sobre },
 ];
-const legal = [{ href: '/privacidad', texto: T.nav.privacidad }];
+const legal = [
+  { href: '/privacidad', texto: T.nav.privacidad },
+  { href: '/terminos', texto: 'Términos de uso' },
+  { href: '/contacto', texto: 'Contacto' },
+];
 ---
 
 <footer class="mt-20 border-t border-crema-200 bg-crema-100/50">
@@ -53,12 +57,6 @@ const legal = [{ href: '/privacidad', texto: T.nav.privacidad }];
               </li>
             ))
           }
-          <li>
-            <ContactoEmail
-              label="Contacto"
-              class="text-sm text-tinta-600 transition-colors hover:text-terracota-600"
-            />
-          </li>
         </ul>
       </div>
     </div>

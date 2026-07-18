@@ -1,0 +1,184 @@
+---
+import Base from '../layouts/Base.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import { SITE } from '../../site.config';
+
+const actualizado = '23 de junio de 2026';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Cómo calcula CalculadoraPsi: metodología y criterios',
+  description:
+    'Todos los criterios de cálculo de la calculadora, explicados con transparencia: ingreso neto, ingreso por hora real e índice de sostenibilidad.',
+  inLanguage: 'es',
+  author: { '@type': 'Organization', name: SITE.name },
+  publisher: { '@type': 'Organization', name: SITE.name },
+};
+---
+
+<Base
+  title="Cómo calcula CalculadoraPsi: metodología y criterios"
+  description="Qué hay detrás de cada número de la calculadora: cómo estimamos el ingreso neto, el ingreso por hora real y el índice de sostenibilidad, con todos los criterios explicados."
+>
+  <JsonLd schema={schema} slot="head" />
+
+  <article class="contenedor py-12">
+    <header class="mx-auto max-w-2xl">
+      <h1 class="text-4xl font-semibold leading-tight">Cómo calcula esta herramienta</h1>
+      <p class="mt-3 text-lg text-tinta-600">
+        Una calculadora en la que vas a basar decisiones no puede ser una caja negra. Acá está
+        todo lo que hace con tus números, criterio por criterio, y también lo que no hace.
+      </p>
+      <p class="mt-4 text-sm text-tinta-500">Última actualización: {actualizado}</p>
+    </header>
+
+    <div class="prosa mt-10">
+      <h2>El principio: números honestos, no números lindos</h2>
+      <p>
+        La mayoría de las cuentas rápidas que hacemos los profesionales sobreestiman el ingreso:
+        multiplicamos sesiones por honorario y nos queda un número de "mes ideal" que casi nunca
+        ocurre. Esta calculadora hace lo contrario a propósito. Cada criterio está elegido para
+        acercarse a lo que <em>de verdad</em> te queda y a lo que <em>de verdad</em> trabajás,
+        aunque el resultado sea menos halagador. Preferimos que el número te sirva a que te guste.
+      </p>
+
+      <h2>1. De la agenda al ingreso bruto</h2>
+      <p>
+        Arrancamos con tu esquema de trabajo: cada grupo de pacientes con su cantidad, su
+        frecuencia semanal y su honorario. Con eso armamos el ingreso semanal "pleno": el de una
+        agenda completa, sin imprevistos. Ese número es el techo teórico, y enseguida lo bajamos
+        a tierra con tres ajustes.
+      </p>
+
+      <h3>Las cancelaciones</h3>
+      <p>
+        Le pedís a la calculadora cuántas sesiones por mes se te caen (cancelaciones, ausencias)
+        y las convertimos en un porcentaje de ausentismo sobre tu agenda. Ese porcentaje reduce
+        lo que facturás. Pero hay un detalle importante, y es una decisión metodológica
+        deliberada: <strong>el tiempo de una sesión cancelada no desaparece de tus horas
+        trabajadas</strong>. Ese horario estuvo reservado y no se lo pudiste ofrecer a nadie más.
+        Por eso las cancelaciones bajan tus ingresos pero no bajan tus horas: exactamente lo que
+        pasa en la realidad.
+      </p>
+
+      <h3>Las vacaciones</h3>
+      <p>
+        Calculamos tu ingreso anual con las semanas que realmente trabajás (si trabajás 46,
+        computamos 46) y el mensual como el anual dividido 12. Esto también es deliberado: si te
+        tomás un mes de descanso, tu promedio mensual real baja, aunque en los meses trabajados
+        factures igual. Es la visión honesta que necesitás para planificar el año, no la foto del
+        mejor mes.
+      </p>
+
+      <h3>Los gastos, cada uno con su ritmo</h3>
+      <p>
+        Cada gasto se carga con su frecuencia real: los mensuales (alquiler, supervisión) van
+        directo, y los anuales (matrícula, seguro, materiales) se reparten entre los 12 meses.
+        Así los gastos grandes que llegan una vez al año no desaparecen de la cuenta: te
+        aparecen prorrateados, que es como efectivamente pesan sobre tu ingreso.
+      </p>
+
+      <h2>2. Del bruto al neto</h2>
+      <p>
+        El impuesto o retención se aplica <strong>sobre lo facturado</strong> (el bruto), al
+        estilo del monotributo argentino o de las retenciones de honorarios de otros países de la
+        región. El porcentaje inicial es una sugerencia por país y es editable, porque tu
+        situación fiscal la conocés vos (o tu contador). El neto, entonces, es: lo facturado,
+        menos impuestos, menos todos los gastos.
+      </p>
+
+      <h2>3. El ingreso por hora real</h2>
+      <p>
+        Este suele ser el número que más sorprende. No dividimos tu neto por tus horas de sesión:
+        lo dividimos por <strong>todas las horas que le dedicás al trabajo</strong> — las
+        sesiones (incluidas las reservadas que se cancelaron) más las horas administrativas que
+        declares: notas, coordinación, mensajes, cobranzas. Porque esa también es tu jornada
+        laboral, aunque nadie la pague por hora. El resultado es lo que efectivamente vale tu
+        hora de trabajo, comparable con cualquier otra alternativa laboral.
+      </p>
+
+      <h2>4. El índice de sostenibilidad</h2>
+      <p>
+        Además del dinero, la calculadora estima qué tan sostenible es tu ritmo con un puntaje de
+        0 a 100 que combina cuatro factores, cada uno con un peso distinto:
+      </p>
+      <ul>
+        <li>
+          <strong>Carga clínica (35%).</strong> Hasta 18 sesiones semanales no penaliza; de ahí
+          en adelante el puntaje baja de forma gradual hasta llegar a cero en 32. Los umbrales
+          salen de la literatura sobre burnout en profesiones de ayuda y de la práctica común de
+          la región; son orientativos y sabemos que cada clínico tiene su propio límite.
+        </li>
+        <li>
+          <strong>Margen económico (25%).</strong> Qué parte de lo que facturás te queda después
+          de gastos e impuestos. Un margen del 60% o más puntúa pleno: por debajo, el esfuerzo se
+          va diluyendo entre costos.
+        </li>
+        <li>
+          <strong>Descanso (25%).</strong> Cuántas semanas al año no trabajás. Cuatro semanas
+          puntúan pleno. Cero descanso es la señal de alerta más clara del índice, aunque los
+          números cierren.
+        </li>
+        <li>
+          <strong>Diversificación (15%).</strong> Cuánto depende tu ingreso de una sola fuente.
+          Usamos un índice de concentración (el mismo tipo de medida que se usa en economía para
+          medir concentración de mercados): si todo tu ingreso viene de un solo grupo de
+          pacientes, tu práctica es más frágil ante cualquier cambio.
+        </li>
+      </ul>
+      <p>
+        El puntaje global se lee en tres franjas: <strong>sostenible</strong> (75 o más),
+        <strong>para mirar de cerca</strong> (50 a 74) y <strong>en riesgo</strong> (menos de
+        50). El índice no diagnostica nada: señala, con criterios explícitos, lo que un colega
+        que te cuida miraría de tu esquema de trabajo.
+      </p>
+
+      <h2>5. La meta: dos caminos, no uno</h2>
+      <p>
+        Si cargás una meta de ingreso neto mensual, la calculadora estima qué te falta por dos
+        vías distintas: cuántas sesiones más por semana necesitarías manteniendo tus honorarios
+        actuales, o qué porcentaje deberías aumentar tus honorarios manteniendo tu volumen. Las
+        dos cuentas incorporan tu ausentismo y tus impuestos reales — de nada sirve una meta
+        calculada sobre el mes ideal. Cuál de los dos caminos conviene (o qué mezcla) es una
+        decisión tuya; sobre eso escribimos en las <a href="/guias">guías</a>.
+      </p>
+
+      <h2>Lo que esta calculadora no hace</h2>
+      <p>
+        La transparencia también es decir los límites. La herramienta no conoce tu categoría
+        fiscal exacta ni tus deducciones: usa un porcentaje editable, no una liquidación. No
+        modela la inflación mes a mes: te muestra una foto con los valores de hoy. No reemplaza a
+        tu contador. Y no guarda ni ve tus números: todo se calcula en tu dispositivo, como
+        contamos en la <a href="/privacidad">política de privacidad</a>.
+      </p>
+
+      <h2>Los valores sugeridos por país</h2>
+      <p>
+        Los honorarios de ejemplo, alquileres y porcentajes de impuestos con los que arranca cada
+        país son puntos de partida realistas para que no empieces de una pantalla vacía, tomados
+        de valores de referencia públicos de cada mercado. Todos son editables, y de hecho la
+        herramienta solo sirve de verdad cuando los reemplazás por los tuyos.
+      </p>
+
+      <p>
+        ¿Ves un criterio que te parece discutible o mejorable? Nos interesa saberlo:
+        <a href="/contacto">escribinos</a>. Esta metodología se actualiza cuando encontramos una
+        forma más honesta de calcular.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-10 max-w-2xl rounded-2xl border border-crema-200 bg-crema-100/60 p-5 text-center sm:p-6">
+      <p class="font-display text-lg font-semibold text-tinta-900">Ahora sí, con tus números</p>
+      <p class="mx-auto mt-1 max-w-md text-sm text-tinta-600">
+        Ya sabés exactamente qué hace la calculadora con cada valor que cargás.
+      </p>
+      <a
+        href="/#calculadora"
+        class="mt-4 inline-block rounded-xl bg-terracota-600 px-5 py-2.5 text-sm font-semibold text-crema-50 shadow-suave transition-colors hover:bg-terracota-700"
+      >
+        Abrir la calculadora
+      </a>
+    </div>
+  </article>
+</Base>
